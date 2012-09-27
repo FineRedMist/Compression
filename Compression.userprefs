@@ -1,0 +1,93 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Huffman\StaticHuffman.cs">
+    <Files>
+      <File FileName="Huffman\DynamicHuffman.cs" Line="562" Column="158" />
+      <File FileName="Huffman\AssemblyInfo.cs" Line="28" Column="1" />
+      <File FileName="BitStream\BitStreamReader.cs" Line="11" Column="30" />
+      <File FileName="BitStream\BitStreamWriter.cs" Line="256" Column="27" />
+      <File FileName="BitStream\Endian.cs" Line="5" Column="15" />
+      <File FileName="BitStream\EndianMarker.cs" Line="32" Column="52" />
+      <File FileName="BitStream\AssemblyInfo.cs" Line="14" Column="32" />
+      <File FileName="BitStream\BitStream.cs" Line="23" Column="1" />
+      <File FileName="BitStream\EndianReader.cs" Line="173" Column="1" />
+      <File FileName="BitStream\Converters\EndianConverter.cs" Line="383" Column="11" />
+      <File FileName="BitStream\EndianWriter.cs" Line="39" Column="57" />
+      <File FileName="BitStreamTests\Endian_Tests.cs" Line="408" Column="1" />
+      <File FileName="g:\Dev\Compression\BitStreamTests\EndianMarker_Tests.cs" Line="23" Column="3" />
+      <File FileName="BitStreamTests\EndianWriter_Tests.cs" Line="7" Column="33" />
+      <File FileName="BitStreamTests\EndianReader_Tests.cs" Line="62" Column="4" />
+      <File FileName="BitStreamTests\BitStreamWriter_Tests.cs" Line="33" Column="4" />
+      <File FileName="BitStreamTests\BitStreamReader_Tests.cs" Line="9" Column="36" />
+      <File FileName="BitStream\BitBinaryReader.cs" Line="23" Column="1" />
+      <File FileName="BitStreamTests\BitBinaryReader_Tests.cs" Line="103" Column="1" />
+      <File FileName="BitStreamTests\BitBinaryWriter_Tests.cs" Line="52" Column="39" />
+      <File FileName="BitStream\BitBinaryWriter.cs" Line="67" Column="12" />
+      <File FileName="BitStreamTests\BinaryReaderWriter_Helpers.cs" Line="23" Column="1" />
+      <File FileName="g:\Dev\Compression\BitStream\BitRingBuffer.cs" Line="158" Column="4" />
+      <File FileName="Huffman\HuffmanMalbrain.cs" Line="469" Column="11" />
+      <File FileName="Huffman\Huffman.cs" Line="9" Column="142" />
+      <File FileName="Huffman\HuffmanExtensions.cs" Line="23" Column="155" />
+      <File FileName="Huffman\StaticHuffman.cs" Line="97" Column="1" />
+      <File FileName="HuffmanTests\DynamicHuffman_DefaultImplementation.cs" Line="118" Column="1" />
+      <File FileName="HuffmanTests\rfc5.txt" Line="950" Column="1" />
+      <File FileName="HuffmanTests\TestResources.resx" Line="23" Column="43" />
+      <File FileName="HuffmanTests\TestResources.cs" Line="7" Column="1" />
+      <File FileName="BitStreamTests\BitRingBuffer_Tests.cs" Line="201" Column="34" />
+      <File FileName="HuffmanTests\DynamicHuffman_OriginalNYTImplementation (copy).cs" Line="31" Column="9" />
+      <File FileName="HuffmanTests\StaticHuffman.cs" Line="61" Column="35" />
+      <File FileName="HuffmanTests\TreeVerificationHelper.cs" Line="101" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="BitStream" expanded="True" />
+          <Node name="BitStreamTests" expanded="True" />
+          <Node name="Huffman" expanded="True" />
+          <Node name="HuffmanTests" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+          </Node>
+          <Node name="LZ" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True">
+          <Node name="BitStreamTests" expanded="True">
+            <Node name="BitStreamTests" expanded="True">
+              <Node name="BitRingBuffer_Tests" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="HuffmanTests" expanded="True">
+            <Node name="HuffmanTests" expanded="True">
+              <Node name="DynamicHuffman_DefaultImplementation" expanded="True" />
+              <Node name="DynamicHuffman_OriginalNYTImplementation" expanded="True" />
+              <Node name="StaticHuffman" expanded="True">
+                <Node name="VerifyCompression" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="G:\Dev\Compression\Huffman\DynamicHuffman.cs" line="102" />
+      <Breakpoint enabled="false" file="G:\Dev\Compression\Huffman\DynamicHuffman.cs" line="176" />
+      <Breakpoint enabled="false" file="G:\Dev\Compression\Huffman\DynamicHuffman.cs" line="479" />
+      <Breakpoint file="G:\Dev\Compression\BitStreamTests\BitRingBuffer_Tests.cs" line="201" />
+      <Breakpoint file="G:\Dev\Compression\Huffman\StaticHuffman.cs" line="153" />
+      <Breakpoint file="G:\Dev\Compression\Huffman\StaticHuffman.cs" line="107" />
+      <Breakpoint file="G:\Dev\Compression\Huffman\StaticHuffman.cs" line="146" />
+      <Breakpoint file="G:\Dev\Compression\Huffman\StaticHuffman.cs" line="75" />
+      <Breakpoint file="G:\Dev\Compression\Huffman\StaticHuffman.cs" line="265" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

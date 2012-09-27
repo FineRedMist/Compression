@@ -1,0 +1,3 @@
+Libraries for handling Endian conversion, serialization, and compression.
+
+Currently C# only.  The functionality will be extended to C/C++ as well.
