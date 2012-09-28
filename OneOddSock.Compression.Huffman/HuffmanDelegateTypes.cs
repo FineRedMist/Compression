@@ -42,7 +42,7 @@ namespace OneOddSock.Compression.Huffman
     /// <summary>
     /// Delegate for writing a <paramref name="symbol"/>.
     /// </summary>
-    public delegate void WriteSymbolDelegate<SymbolType>(SymbolType symbol) where SymbolType : struct;
+    public delegate void WriteSymbolDelegate<TSymbolType>(TSymbolType symbol) where TSymbolType : struct;
 
     /// <summary>
     /// Delegate for writing the NotYetTransmitted marker from the Huffman tree during WriteTable.
@@ -52,7 +52,7 @@ namespace OneOddSock.Compression.Huffman
     /// <summary>
     /// Delegate for reading a symbol.
     /// </summary>
-    public delegate SymbolType ReadSymbolDelegate<SymbolType>();
+    public delegate TSymbolType ReadSymbolDelegate<TSymbolType>();
 
     /// <summary>
     /// Delegate for reading an unsigned integer (for Huffman table processing).

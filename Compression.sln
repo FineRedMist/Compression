@@ -11,7 +11,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51F63BF9-3C1F-458F-9DF4-459B7C96BD35}"
 	ProjectSection(SolutionItems) = preProject
 		Compression.vsmdi = Compression.vsmdi
+		LICENSE = LICENSE
 		Local.testsettings = Local.testsettings
+		README = README
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
