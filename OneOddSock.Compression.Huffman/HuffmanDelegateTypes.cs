@@ -64,4 +64,9 @@ namespace OneOddSock.Compression.Huffman
     /// </summary>
     /// <param name="value"></param>
     public delegate void WriteUInt32Delegate(uint value);
+
+    /// <summary>
+    /// Writes a DOT formatted graph of the current Huffman tree potentially with the update operation.
+    /// </summary>
+    public delegate void WriteDotStringDelegate(string dotGraph);
 }

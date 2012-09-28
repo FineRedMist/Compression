@@ -15,7 +15,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Text;
 
 namespace OneOddSock.Compression.Huffman
 {
@@ -58,6 +58,10 @@ namespace OneOddSock.Compression.Huffman
         {
         }
 
+        /// <summary>
+        /// Delegate to write tree transformation updates to.
+        /// </summary>
+        public WriteDotStringDelegate DotWriter { get; set; }
 
         /// <summary>
         /// The height of the tree.
@@ -199,7 +203,7 @@ namespace OneOddSock.Compression.Huffman
                 {
                     valueWriter(_entries[i].LeftChild);
                     valueWriter(_entries[i].RightChild);
-                        // Technically unneeded, but consistent with static implementation.
+                    // Technically unneeded, but consistent with static implementation.
                 }
             }
         }
@@ -213,21 +217,44 @@ namespace OneOddSock.Compression.Huffman
         }
 
         /// <summary>
-        /// Writes a line to the debugger.  Diagnostic tool only.
-        /// </summary>
-        protected void WriteLine(string format, params object[] args)
-        {
-            string message = string.Format(format, args);
-            Debug.WriteLine(message);
-        }
-
-        /// <summary>
         /// Dumps the tree in linear order to the debugger.  By default compiled out.
         /// Recommend using a monospaced font for viewing.
         /// </summary>
-        /// <param name="detail">Detailed information about what changed the state of the tree befor dumping.</param>
-        protected void DumpTree(string detail)
+        private void ToDot(DotOp op, uint nodeAffected, uint swapNode, int weightChange, TSymbolType addedSymbol)
         {
+            if (DotWriter != null)
+            {
+                var builder = new StringBuilder();
+                builder.AppendFormat("digraph {0} {{", op).AppendLine();
+                builder.Append("\tgraph [ranksep=0];").AppendLine();
+                builder.Append("\tnode [shape=record];").AppendLine();
+
+                for (uint i = 0; i < _entries.Length; ++i)
+                {
+                    builder.Append(_entries[i].ToDot(i, this)).AppendLine();
+                }
+
+                builder.AppendFormat("\tNode{0} [color=lawngreen];", nodeAffected).AppendLine();
+                switch (op)
+                {
+                    case DotOp.SwapNodes:
+                        builder.AppendFormat("\tNode{0} [color=lawngreen];", swapNode).AppendLine();
+                        builder.AppendFormat("\tlabel=\"Swapped nodes {0} and {1}.\"", nodeAffected, swapNode).
+                            AppendLine();
+                        break;
+                    case DotOp.AddSymbol:
+                        builder.AppendFormat("\tlabel=\"Added symbol {0} at index {1}.\"", addedSymbol, nodeAffected).
+                            AppendLine();
+                        break;
+                    case DotOp.ChangeWeight:
+                        builder.AppendFormat("\tlabel=\"Changed node weight for {0} by {1}.\"", nodeAffected,
+                                             weightChange).
+                            AppendLine();
+                        break;
+                }
+                builder.Append("}}").AppendLine();
+                DotWriter(builder.ToString());
+            }
 #if false
 			int maxIndexWidth = (int) Math.Ceiling(Math.Log10(entries.Length - 1));
 			int maxWeightWidth = (int) Math.Ceiling(Math.Log10(entries.Max(entry => entry.weight)));
@@ -343,7 +370,7 @@ namespace OneOddSock.Compression.Huffman
             if (!_map.TryGetValue(symbol, out index))
             {
                 index = AddNewSymbol(symbol);
-                DumpTree("after add of '" + symbol.ToString() + "'");
+                ToDot(DotOp.AddSymbol, index, 0, 0, symbol.Symbol);
             }
 
             if (weightModifier < 0
@@ -552,7 +579,7 @@ namespace OneOddSock.Compression.Huffman
                 var weightToAdd = (uint) Math.Min(weightModifier, nextBlockWeight - _entries[index].Weight);
                 _entries[index].Weight += weightToAdd;
                 remainingWeightModifier -= (int) weightToAdd;
-                DumpTree("after increase of index " + index.ToString() + " by " + weightToAdd.ToString());
+                ToDot(DotOp.ChangeWeight, index, 0, (int) weightToAdd, default(TSymbolType));
                 if (index != Root)
                 {
                     uint parentIndex = _entries[index].ParentIndex;
@@ -581,7 +608,7 @@ namespace OneOddSock.Compression.Huffman
                 var weightToRemove = (uint) Math.Min(weightModifier, _entries[index].Weight - nextBlockWeight);
                 _entries[index].Weight -= weightToRemove;
                 remainingWeightModifier -= (int) weightToRemove;
-                DumpTree("after decrease of index " + index.ToString() + " by " + weightToRemove.ToString());
+                ToDot(DotOp.ChangeWeight, index, 0, -((int) weightToRemove), default(TSymbolType));
                 if (index != Root)
                 {
                     uint parentIndex = _entries[index].ParentIndex;
@@ -639,7 +666,7 @@ namespace OneOddSock.Compression.Huffman
                 FixupEntry(a);
                 FixupEntry(b);
 
-                DumpTree("after swapping indices " + a.ToString() + " and " + b.ToString());
+                ToDot(DotOp.SwapNodes, a, b, 0, default(TSymbolType));
             }
         }
 
@@ -673,6 +700,17 @@ namespace OneOddSock.Compression.Huffman
                        ? 1
                        : (nytWeight > 0 ? -1 : 0);
         }
+
+        #region Nested type: DotOp
+
+        private enum DotOp
+        {
+            AddSymbol,
+            ChangeWeight,
+            SwapNodes
+        };
+
+        #endregion
 
         #region Nested type: Entry
 
@@ -712,6 +750,25 @@ namespace OneOddSock.Compression.Huffman
             public uint GetIndex(bool bitValue)
             {
                 return bitValue ? RightChild : LeftChild;
+            }
+
+            public string ToDot(uint myOrder, DynamicHuffman<TSymbolType> parent)
+            {
+                var builder = new StringBuilder();
+                if (IsLeaf)
+                {
+                    builder.AppendFormat("\tNode{0} [label=\"{{{{{0}|{1}|{2}}}|", myOrder, Symbol.ToString(),
+                                         Weight);
+                    parent.WriteCode(myOrder, (bool value) => builder.Append(value ? '1' : '0'));
+                    builder.Append("}}\"];");
+                }
+                else
+                {
+                    builder.AppendFormat("\tNode{0} [label=\"{{{{{0}|{1}}}}}\"];", myOrder, Weight);
+                    builder.AppendFormat("\tNode{0} -> Node{1}", myOrder, LeftChild);
+                    builder.AppendFormat("\tNode{0} -> Node{1}", myOrder, RightChild);
+                }
+                return builder.ToString().Replace("<NYT>", "*NYT*");
             }
         };
 
@@ -761,6 +818,8 @@ namespace OneOddSock.Compression.Huffman
 
             #region IEquatable implementation
 
+            #region IEquatable<DynamicHuffman<TSymbolType>.SymbolSpace> Members
+
             public bool Equals(SymbolSpace other)
             {
                 return _isSymbolValid
@@ -770,12 +829,14 @@ namespace OneOddSock.Compression.Huffman
 
             #endregion
 
-            #region IEquatable implementation
+            #region IEquatable<TSymbolType> Members
 
             public bool Equals(TSymbolType other)
             {
                 return _isSymbolValid && _symbol.CompareTo(other) == 0;
             }
+
+            #endregion
 
             #endregion
 
