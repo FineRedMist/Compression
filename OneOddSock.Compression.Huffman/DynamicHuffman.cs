@@ -781,7 +781,9 @@ namespace OneOddSock.Compression.Huffman
 
         private struct SymbolSpace : IEquatable<SymbolSpace>, IEquatable<TSymbolType>, IComparable<SymbolSpace>
         {
+// ReSharper disable StaticFieldInGenericType
             public static readonly SymbolSpace NotYetTransmitted = new SymbolSpace
+// ReSharper restore StaticFieldInGenericType
                                                                        {
                                                                            _symbol = default(TSymbolType),
                                                                            _isSymbolValid = false
