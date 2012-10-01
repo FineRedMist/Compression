@@ -762,7 +762,7 @@ namespace OneOddSock.Compression.Huffman
                 {
                     builder.AppendFormat("\tNode{0} [label=\"{{{{{0}|{1}|{2}}}|", myOrder, Symbol.ToString(),
                                          Weight);
-                    parent.WriteCode(myOrder, (bool value) => builder.Append(value ? '1' : '0'));
+                    parent.WriteCode(myOrder, value => builder.Append(value ? '1' : '0'));
                     builder.Append("}}\"];");
                 }
                 else
