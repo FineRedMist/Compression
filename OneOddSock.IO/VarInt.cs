@@ -116,7 +116,9 @@ namespace OneOddSock.IO
         public static uint ReadVarUInt32(this BinaryReader reader)
         {
             ulong result = reader.ReadVarUInt64();
+// ReSharper disable ConditionIsAlwaysTrueOrFalse -- this seems to be erroneous.  Sent message to JetBrains about it.
             if (result >= uint.MinValue && result <= uint.MaxValue)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 return (uint) result;
             }
@@ -130,7 +132,9 @@ namespace OneOddSock.IO
         public static ushort ReadVarUInt16(this BinaryReader reader)
         {
             ulong result = reader.ReadVarUInt64();
+// ReSharper disable ConditionIsAlwaysTrueOrFalse -- this seems to be erroneous.  Sent message to JetBrains about it.
             if (result >= ushort.MinValue && result <= ushort.MaxValue)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 return (ushort) result;
             }

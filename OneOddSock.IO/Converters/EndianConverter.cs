@@ -35,10 +35,6 @@ namespace OneOddSock.IO.Converters
             ReverseCopier = new EndianConverter(CopyReverse);
         }
 
-        private EndianConverter()
-        {
-        }
-
         private EndianConverter(RawCopierDelegate copier)
         {
             _rawCopier = copier;
@@ -445,7 +441,9 @@ namespace OneOddSock.IO.Converters
             return result;
         }
 
+        // ReSharper disable UnusedParameter.Local
         private void SafeCopier(byte* dst, int dstSize, byte* src, int srcSize, int count)
+        // ReSharper restore UnusedParameter.Local
         {
             if (Math.Min(srcSize, count) > dstSize)
             {
