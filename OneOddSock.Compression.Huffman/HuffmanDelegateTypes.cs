@@ -63,7 +63,6 @@ namespace OneOddSock.Compression.Huffman
     /// <summary>
     /// Delegate for writing an unsigned integer <paramref name="value"/> (for Huffman table processing).
     /// </summary>
-    /// <param name="value"></param>
     public delegate void WriteUInt32Delegate(uint value);
 
     /// <summary>
