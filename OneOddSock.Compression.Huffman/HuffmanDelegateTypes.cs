@@ -34,10 +34,11 @@ namespace OneOddSock.Compression.Huffman
     /// <param name="treeWeight">Weight of the entire tree</param>
     /// <param name="nytWeight">Weight of the NotYetTransmitted marker</param>
     /// <param name="symbolCount">Number of symbols in the tree</param>
+    /// <param name="symbol">The symbol that was encountered</param>
     /// <param name="nytOccurred">Whether the NotYetTransmitted marker just occurred or whether another symbol was processed</param>
     /// <returns>Amount to adjust the weight of the NotYetTransmitted marker</returns>
-    public delegate int NotYetTransmittedWeightTweakDelegate(
-        uint treeHeight, uint nytLevel, uint treeWeight, uint nytWeight, uint symbolCount, bool nytOccurred);
+    public delegate int NotYetTransmittedWeightTweakDelegate<TSymbolType>(
+        uint treeHeight, uint nytLevel, uint treeWeight, uint nytWeight, uint symbolCount, TSymbolType symbol, bool nytOccurred);
 
     /// <summary>
     /// Delegate for writing a <paramref name="symbol"/>.

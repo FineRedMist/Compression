@@ -31,7 +31,7 @@ namespace OneOddSock.Compression.Huffman
         /// </summary>
         private readonly IDictionary<SymbolSpace, uint> _map;
 
-        private readonly NotYetTransmittedWeightTweakDelegate _tweaker;
+        private readonly NotYetTransmittedWeightTweakDelegate<TSymbolType> _tweaker;
         private Entry[] _entries;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace OneOddSock.Compression.Huffman
         /// the weight of the NotYetTransmitted symbol.
         /// </summary>
         /// <param name="tweaker">Delegate for adjusting the weight of the NotYetTransmitted symbol.</param>
-        public DynamicHuffman(NotYetTransmittedWeightTweakDelegate tweaker)
+        public DynamicHuffman(NotYetTransmittedWeightTweakDelegate<TSymbolType> tweaker)
         {
             _entries = new Entry[1];
             _entries[0].Height = 1;
@@ -137,12 +137,12 @@ namespace OneOddSock.Compression.Huffman
             if (result.IsValid)
             {
                 UpdateSymbolInternal(result, 1);
-                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(false));
+                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(result.Symbol, false));
                 return result.Symbol;
             }
 
-            UpdateSymbolInternal(result, GetTweak(true));
             result = symbolReader();
+            UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(result.Symbol, true));
             UpdateSymbolInternal(result, 1);
             return result.Symbol;
         }
@@ -163,14 +163,14 @@ namespace OneOddSock.Compression.Huffman
             else
             {
                 WriteCodeInternal(SymbolSpace.NotYetTransmitted, bitWriter);
-                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(true));
+                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(symbol, true));
                 symbolWriter(symbol);
                 nytSeen = true;
             }
             UpdateSymbolInternal(symbol, 1);
             if (!nytSeen)
             {
-                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(false));
+                UpdateSymbolInternal(SymbolSpace.NotYetTransmitted, GetTweak(symbol, false));
             }
         }
 
@@ -676,9 +676,10 @@ namespace OneOddSock.Compression.Huffman
         /// 
         /// This function runs in at least O(map + level), not including the time for the delegate itself.
         /// </summary>
+        /// <param name="symbol">The symbol encountered</param>
         /// <param name="occurred">Whether the NotYetTransmitted symbol occurred (instead of another symbol).</param>
         /// <returns>Amount to modify the weight of the NotYetTransmitted symbol.</returns>
-        private int GetTweak(bool occurred)
+        private int GetTweak(TSymbolType symbol, bool occurred)
         {
             return _tweaker(
                 Height,
@@ -686,6 +687,7 @@ namespace OneOddSock.Compression.Huffman
                 Weight,
                 GetWeightInternal(SymbolSpace.NotYetTransmitted),
                 (uint) _map.Count,
+                symbol,
                 occurred);
         }
 
@@ -694,7 +696,8 @@ namespace OneOddSock.Compression.Huffman
         /// symbol is encountered, decrements it otherwise (to a minimum of zero).
         /// </summary>
         private static int DefaultNotYetTransmittedWeightTweak(uint treeHeight, uint nytLevel, uint treeWeight,
-                                                               uint nytWeight, uint symbolCount, bool nytOccurred)
+                                                               uint nytWeight, uint symbolCount, TSymbolType symbol,
+                                                               bool nytOccurred)
         {
             return nytOccurred
                        ? 1

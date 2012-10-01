@@ -23,7 +23,7 @@ namespace OneOddSock.Compression.Huffman.Tests
     public class DynamicHuffman_OriginalNYTImplementation
     {
         private static int OriginalNYT(uint treeHeight, uint nytLevel, uint treeWeight, uint nytWeight, uint symbolCount,
-                                       bool nytOccurred)
+                                       char symbol, bool nytOccurred)
         {
             return 0;
         }
