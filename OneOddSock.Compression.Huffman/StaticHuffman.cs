@@ -155,15 +155,15 @@ namespace OneOddSock.Compression.Huffman
                 return info.Bits;
             }
             var result = new BitArray((int) Height);
-            int currentIndex = 0;
+            uint currentIndex = 0;
             UpdateCachedBits(info.Index, result, ref currentIndex);
-            result.Length = currentIndex;
+            result.Length = (int) currentIndex;
             info.Bits = result;
             _map[symbol] = info;
             return result;
         }
 
-        private void UpdateCachedBits(uint index, BitArray bits, ref int currentIndex)
+        private void UpdateCachedBits(uint index, BitArray bits, ref uint currentIndex)
         {
             uint parent = _entries[index].Parent;
             bool output = _entries[parent].GetChildIndex(index);
@@ -171,7 +171,7 @@ namespace OneOddSock.Compression.Huffman
             {
                 UpdateCachedBits(parent, bits, ref currentIndex);
             }
-            bits[currentIndex] = output;
+            bits[(int) currentIndex] = output;
             ++currentIndex;
         }
 
