@@ -37,6 +37,14 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public ArithmeticCoder()
         {
+            Reset();
+        }
+
+        /// <summary>
+        /// Resets the state of the coder.
+        /// </summary>
+        public void Reset()
+        {
             _range.Low = 0;
             _range.High = 0x7FFFFFFF; // just work with least significant 31 bits
             _scale = 0;
@@ -106,6 +114,8 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 EmitE3Mappings(bitWriter, true); // These will default to false for the other case.
             }
+
+            Reset();
         }
 
         /// <summary>
