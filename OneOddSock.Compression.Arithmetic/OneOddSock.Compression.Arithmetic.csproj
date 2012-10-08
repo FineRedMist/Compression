@@ -105,6 +105,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArithmeticCoder.cs" />
+    <Compile Include="ArithmeticCoderExtensions.cs" />
     <Compile Include="ArithmeticDelegateTypes.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="ModelI.cs" />

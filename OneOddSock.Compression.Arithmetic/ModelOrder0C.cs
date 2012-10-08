@@ -20,7 +20,8 @@ namespace OneOddSock.Compression.Arithmetic
     /// </summary>
     public class ModelOrder0C : ModelI
     {
-        ZeroOrderAdaptiveByteModel model = new ZeroOrderAdaptiveByteModel();
+        private readonly ZeroOrderAdaptiveByteModel model = new ZeroOrderAdaptiveByteModel();
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,19 +44,11 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 byte symbol = SymbolReader();
 
-                // cumulate frequencies
-                Range count = model.GetRange(symbol);
-
-                // encode symbol
-                Coder.Encode(count, model.TotalFrequencies, BitWriter);
-
-                // update model
-                model.Update(symbol);
+                Coder.Encode(symbol, model, BitWriter);
             }
 
             // write escape symbol for termination
-            Range terminator = model.GetRange(256);
-            Coder.Encode(terminator, model.TotalFrequencies, BitWriter);
+            Coder.Encode((uint) 256, model, BitWriter);
         }
 
         /// <summary>
@@ -67,31 +60,11 @@ namespace OneOddSock.Compression.Arithmetic
 
             do
             {
-                uint value;
-
-                // read value
-                value = Coder.DecodeTarget(model.TotalFrequencies);
-
-                // determine symbol
-                RangeSymbol<uint> rangeSymbol = model.Decode(value);
-
-                symbol = rangeSymbol.Symbol;
-
-                // write symbol
-                if (symbol < 256)
+                symbol = Coder.Decode(model, BitReader);
+                if (symbol != 256)
                 {
                     SymbolWriter((byte) symbol);
                 }
-                else
-                {
-                    break;
-                }
-
-                // adapt decoder
-                Coder.Decode(rangeSymbol.Range, BitReader);
-
-                // update model
-                model.Update(symbol);
             } while (symbol != 256); // until termination symbol read
         }
     };
