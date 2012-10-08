@@ -75,6 +75,10 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 throw new ArgumentOutOfRangeException("counts");
             }
+            if(counts.Low >= counts.High)
+            {
+                throw new ArgumentException("counts");
+            }
             if (bitWriter == null)
             {
                 throw new ArgumentNullException("bitWriter");
@@ -122,9 +126,9 @@ namespace OneOddSock.Compression.Arithmetic
             bool isLowGreaterThanFirstQuarter = _range.Low >= FirstQuarter;
             bitWriter(isLowGreaterThanFirstQuarter);
 
-            ++_scale; // Ensures at least one additional bit is written.
-            if (!isLowGreaterThanFirstQuarter)
+            if (!isLowGreaterThanFirstQuarter)  // The alternative defaults missing bits to zero.
             {
+                ++_scale; // Ensures at least one additional bit is written.
                 EmitE3Mappings(bitWriter, true); // These will default to false for the other case.
             }
 
@@ -173,6 +177,10 @@ namespace OneOddSock.Compression.Arithmetic
         public void Decode(Range counts,
                            ReadBitDelegate bitReader)
         {
+            if (counts.Low >= counts.High)
+            {
+                throw new ArgumentException("counts");
+            }
             if (counts.Low >= RangeLimit || counts.High >= RangeLimit)
             {
                 throw new ArgumentOutOfRangeException("counts");
