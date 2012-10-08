@@ -71,11 +71,11 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 throw new ArgumentOutOfRangeException("total");
             }
-            if(counts.Low >= RangeLimit || counts.High >= RangeLimit)
+            if (counts.Low >= RangeLimit || counts.High >= RangeLimit)
             {
                 throw new ArgumentOutOfRangeException("counts");
             }
-            if(bitWriter == null)
+            if (bitWriter == null)
             {
                 throw new ArgumentNullException("bitWriter");
             }
@@ -167,7 +167,6 @@ namespace OneOddSock.Compression.Arithmetic
             return (_buffer - _range.Low)/_step;
         }
 
-
         /// <summary>
         /// Updates the decoder based on the provided range.
         /// </summary>
@@ -178,7 +177,7 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 throw new ArgumentOutOfRangeException("counts");
             }
-            if (bitReader== null)
+            if (bitReader == null)
             {
                 throw new ArgumentNullException("bitReader");
             }
