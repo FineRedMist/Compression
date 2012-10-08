@@ -23,14 +23,21 @@
             _step = 0;
         }
 
-        public WriteBitDelegate BitWriter { get; set; }
         public ReadBitDelegate BitReader { get; set; }
-        public WriteSymbolDelegate<byte> SymbolWriter { get; set; }
-        public ReadSymbolDelegate<byte> SymbolReader { get; set; }
+
+        private void EmitE3Mappings(WriteBitDelegate bitWriter, bool value)
+        {
+            // perform e3 mappings
+            for (; _scale > 0; _scale--)
+            {
+                bitWriter(value);
+            }
+        }
 
         public void Encode(uint lowCount,
                            uint highCount,
-                           uint total)
+                           uint total,
+                           WriteBitDelegate bitWriter)
             // total < 2^29
         {
             // partition number space into single steps
@@ -45,30 +52,13 @@
             // apply e1/e2 mapping
             while ((_high < Half) || (_low >= Half))
             {
-                if (_high < Half)
-                {
-                    BitWriter(false);
-                    _low = _low*2;
-                    _high = _high*2 + 1;
+                bool isHighLessThanHalf = _high < Half; // true => emit false for lower half.
+                uint sub = isHighLessThanHalf ? 0 : Half;
 
-                    // perform e3 mappings
-                    for (; _scale > 0; _scale--)
-                    {
-                        BitWriter(true);
-                    }
-                }
-                else if (_low >= Half)
-                {
-                    BitWriter(true);
-                    _low = 2*(_low - Half);
-                    _high = 2*(_high - Half) + 1;
-
-                    // perform e3 mappings
-                    for (; _scale > 0; _scale--)
-                    {
-                        BitWriter(false);
-                    }
-                }
+                bitWriter(!isHighLessThanHalf);
+                EmitE3Mappings(bitWriter, isHighLessThanHalf);
+                _low = 2*(_low - sub);
+                _high = 2*(_high - sub) + 1;
             }
 
             // e3
@@ -81,28 +71,16 @@
             }
         }
 
-        public void EncodeFinish()
+        public void EncodeFinish(WriteBitDelegate bitWriter)
         {
             // There are two possibilities of how _low and _high can be distributed,
             // which means that two bits are enough to distinguish them.
 
-            if (_low < FirstQuarter) // _low < FirstQuarter < Half <= _high
-            {
-                BitWriter(false);
+            bool isLowGreaterThanFirstQuarter = _low >= FirstQuarter;
+            bitWriter(isLowGreaterThanFirstQuarter);
 
-                for (int i = 0; i < _scale + 1; i++) // perform e3-skaling
-                {
-                    BitWriter(true);
-                }
-            }
-            else // _low < Half < ThirdQuarter <= _high
-            {
-                BitWriter(true); // zeros added automatically by the decoder; no need to send them
-                for (int i = 0; i < _scale + 1; i++) // perform e3-skaling
-                {
-                    BitWriter(false);
-                }
-            }
+            ++_scale; // Ensures at least one additional bit is written.
+            EmitE3Mappings(bitWriter, !isLowGreaterThanFirstQuarter);
         }
 
         public void DecodeStart()
@@ -161,7 +139,5 @@
                 _buffer = 2*(_buffer - FirstQuarter) + ((uint) (BitReader() ? 1 : 0));
             }
         }
-
-        // encoder & decoder
     };
 }
