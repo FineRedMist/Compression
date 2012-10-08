@@ -35,7 +35,7 @@ namespace OneOddSock.Compression.Arithmetic.Tests
 
             var encoder = new ArithmeticCoder();
             var model = new ZeroOrderAdaptiveByteModel();
-            encoder.Encode(model, writer.Write, () => { return data[curSymbol++]; }, (uint)data.Length);
+            encoder.Encode(model, writer.Write, () => { return data[curSymbol++]; }, (uint) data.Length);
             writer.Flush();
             stream.Position = 0;
 
@@ -51,8 +51,7 @@ namespace OneOddSock.Compression.Arithmetic.Tests
 
             CollectionAssert.AreEqual(data, decodedBytes);
 
-            // Original data size: 27350
-            // Compressed size: 16355
+            Assert.AreEqual(16355, stream.Length);
         }
     }
 }
