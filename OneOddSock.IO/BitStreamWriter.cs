@@ -99,7 +99,7 @@ namespace OneOddSock.IO
         /// </value>
         public override bool CanWrite
         {
-            get { return true; }
+            get { return BaseStream.CanWrite; }
         }
 
         /// <summary>

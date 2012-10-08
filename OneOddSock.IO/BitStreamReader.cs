@@ -71,7 +71,7 @@ namespace OneOddSock.IO
         /// </value>
         public override bool CanRead
         {
-            get { return true; }
+            get { return BaseStream.CanRead; }
         }
 
         /// <summary>
