@@ -11,7 +11,7 @@
         public void Encode(ReadSymbolDelegate<byte> symbolReader, WriteBitDelegate bitWriter, uint symbolCount)
         {
             BitWriter = Coder.BitWriter = bitWriter;
-            SymbolReader = Coder.SymbolReader = symbolReader;
+            SymbolReader = symbolReader;
             Encode(symbolCount);
             Coder.EncodeFinish();
         }
@@ -19,7 +19,7 @@
         public void Decode(ReadBitDelegate bitReader, WriteSymbolDelegate<byte> symbolWriter)
         {
             BitReader = Coder.BitReader = bitReader;
-            SymbolWriter = Coder.SymbolWriter = symbolWriter;
+            SymbolWriter = symbolWriter;
             Coder.DecodeStart();
             Decode();
         }
