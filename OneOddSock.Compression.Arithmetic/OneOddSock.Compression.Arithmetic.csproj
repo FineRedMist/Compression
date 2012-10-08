@@ -104,8 +104,10 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArithmeticCoder.cs" />
     <Compile Include="ArithmeticDelegateTypes.cs" />
-    <Compile Include="CodeSample.cs" />
+    <Compile Include="ModelI.cs" />
+    <Compile Include="ModelOrder0C.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
