@@ -95,7 +95,10 @@
             bitWriter(isLowGreaterThanFirstQuarter);
 
             ++_scale; // Ensures at least one additional bit is written.
-            EmitE3Mappings(bitWriter, !isLowGreaterThanFirstQuarter);
+            if (!isLowGreaterThanFirstQuarter)
+            {
+                EmitE3Mappings(bitWriter, true);    // These will default to false for the other case.
+            }
         }
 
         /// <summary>

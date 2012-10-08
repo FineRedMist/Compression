@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Huff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Arithmetic", "OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj", "{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Arithmetic.Tests", "Tests\OneOddSock.Compression.Arithmetic.Tests\OneOddSock.Compression.Arithmetic.Tests.csproj", "{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Compression.vsmdi
@@ -54,6 +56,10 @@ Global
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C44DF3B4-5640-4708-855B-B2D694F0A402} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
 		{F5BE211D-922C-44BB-984A-74549A3492C0} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
+		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = BitStream\BitStream.csproj
