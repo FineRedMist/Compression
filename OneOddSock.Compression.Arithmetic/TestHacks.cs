@@ -13,12 +13,7 @@
 	limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-/* This file is entirely for providing functionality for testing.
+ /* This file is entirely for providing functionality for testing.
  * This content will be moved out once other examples have been 
  * created that don't rely on this level of specificity.
  */
