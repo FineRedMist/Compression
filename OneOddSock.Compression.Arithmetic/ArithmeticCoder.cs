@@ -17,6 +17,9 @@ namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
     /// Arithmetic coder using integer ranges.
+    /// 
+    /// This is based on the implementation by Eric Bodden 
+    /// at: http://www.bodden.de/legacy/arithmetic-coding/
     /// </summary>
     public class ArithmeticCoder
     {
@@ -25,12 +28,11 @@ namespace OneOddSock.Compression.Arithmetic
         private const uint FirstQuarter = 0x20000000;
         private const uint ThirdQuarter = 0x60000000;
         private const uint Half = 0x40000000;
+        private static readonly Range BoundaryAdjust = new Range {Low = 0, High = 1};
         private uint _buffer;
         private Range _range;
         private uint _scale;
         private uint _step;
-
-        private static readonly Range BoundaryAdjust = new Range() {Low = 0, High = 1};
 
         /// <summary>
         /// Constructor
@@ -51,15 +53,6 @@ namespace OneOddSock.Compression.Arithmetic
 
             _buffer = 0;
             _step = 0;
-        }
-
-        private void EmitE3Mappings(WriteBitDelegate bitWriter, bool value)
-        {
-            // perform e3 mappings
-            for (; _scale > 0; _scale--)
-            {
-                bitWriter(value);
-            }
         }
 
         /// <summary>
@@ -174,6 +167,15 @@ namespace OneOddSock.Compression.Arithmetic
                 _scale++;
                 _range = (_range - FirstQuarter)*2 + BoundaryAdjust;
                 _buffer = 2*(_buffer - FirstQuarter) + ((uint) (bitReader() ? 1 : 0));
+            }
+        }
+
+        private void EmitE3Mappings(WriteBitDelegate bitWriter, bool value)
+        {
+            // perform e3 mappings
+            for (; _scale > 0; _scale--)
+            {
+                bitWriter(value);
             }
         }
     };

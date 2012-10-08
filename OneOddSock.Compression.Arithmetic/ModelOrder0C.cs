@@ -20,9 +20,7 @@ namespace OneOddSock.Compression.Arithmetic
     /// </summary>
     public class ModelOrder0C : ModelI
     {
-        private readonly uint[] _charFrequency = new uint[257];
-        private uint _totalFrequencies;
-
+        ZeroOrderAdaptiveByteModel model = new ZeroOrderAdaptiveByteModel();
         /// <summary>
         /// Constructor
         /// </summary>
@@ -33,10 +31,7 @@ namespace OneOddSock.Compression.Arithmetic
 
         private void ResetModel()
         {
-            // initialize probabilities with 1
-            _totalFrequencies = 257; // 256 + escape symbol for termination
-            for (uint i = 0; i < 257; i++)
-                _charFrequency[i] = 1;
+            model.Reset();
         }
 
         /// <summary>
@@ -49,30 +44,18 @@ namespace OneOddSock.Compression.Arithmetic
                 byte symbol = SymbolReader();
 
                 // cumulate frequencies
-                Range count = new Range() {Low = 0, High = 0};
-                byte j = 0;
-                for (; j < symbol; j++)
-                {
-                    count.Low += _charFrequency[j];
-                }
-                count.High = count.Low + _charFrequency[j];
+                Range count = model.GetRange(symbol);
 
                 // encode symbol
-                Coder.Encode(count, _totalFrequencies, BitWriter);
+                Coder.Encode(count, model.TotalFrequencies, BitWriter);
 
                 // update model
-                _charFrequency[symbol]++;
-                _totalFrequencies++;
-
-                if (_totalFrequencies >= (1 << 29))
-                {
-                    ResetModel();
-                }
+                model.Update(symbol);
             }
 
             // write escape symbol for termination
-            Range terminator = new Range() { Low = _totalFrequencies - 1, High = _totalFrequencies };
-            Coder.Encode(terminator, _totalFrequencies, BitWriter);
+            Range terminator = model.GetRange(256);
+            Coder.Encode(terminator, model.TotalFrequencies, BitWriter);
         }
 
         /// <summary>
@@ -87,15 +70,12 @@ namespace OneOddSock.Compression.Arithmetic
                 uint value;
 
                 // read value
-                value = Coder.DecodeTarget(_totalFrequencies);
-
-                Range counts = new Range() {Low = 0, High = 0};
+                value = Coder.DecodeTarget(model.TotalFrequencies);
 
                 // determine symbol
-                for (symbol = 0; counts.Low + _charFrequency[symbol] <= value; symbol++)
-                {
-                    counts.Low += _charFrequency[symbol];
-                }
+                RangeSymbol<uint> rangeSymbol = model.Decode(value);
+
+                symbol = rangeSymbol.Symbol;
 
                 // write symbol
                 if (symbol < 256)
@@ -108,16 +88,10 @@ namespace OneOddSock.Compression.Arithmetic
                 }
 
                 // adapt decoder
-                counts.High = counts.Low + _charFrequency[symbol];
-                Coder.Decode(counts, BitReader);
+                Coder.Decode(rangeSymbol.Range, BitReader);
 
                 // update model
-                _charFrequency[symbol]++;
-                _totalFrequencies++;
-                if (_totalFrequencies >= (1 << 29))
-                {
-                    ResetModel();
-                }
+                model.Update(symbol);
             } while (symbol != 256); // until termination symbol read
         }
     };
