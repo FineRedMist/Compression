@@ -75,7 +75,7 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 throw new ArgumentOutOfRangeException("counts");
             }
-            if(counts.Low >= counts.High)
+            if (counts.Low >= counts.High)
             {
                 throw new ArgumentException("counts");
             }
@@ -126,7 +126,7 @@ namespace OneOddSock.Compression.Arithmetic
             bool isLowGreaterThanFirstQuarter = _range.Low >= FirstQuarter;
             bitWriter(isLowGreaterThanFirstQuarter);
 
-            if (!isLowGreaterThanFirstQuarter)  // The alternative defaults missing bits to zero.
+            if (!isLowGreaterThanFirstQuarter) // The alternative defaults missing bits to zero.
             {
                 ++_scale; // Ensures at least one additional bit is written.
                 EmitE3Mappings(bitWriter, true); // These will default to false for the other case.

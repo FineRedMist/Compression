@@ -114,7 +114,6 @@
     <Compile Include="Range.cs" />
     <Compile Include="RangeExtensions.cs" />
     <Compile Include="RangeSymbol.cs" />
-    <Compile Include="TestHacks.cs" />
     <Compile Include="ZeroOrderAdaptiveByteModel.cs" />
   </ItemGroup>
   <ItemGroup>
