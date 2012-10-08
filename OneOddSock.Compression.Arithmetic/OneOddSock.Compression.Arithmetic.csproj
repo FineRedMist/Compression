@@ -108,8 +108,6 @@
     <Compile Include="ArithmeticCoderExtensions.cs" />
     <Compile Include="ArithmeticDelegateTypes.cs" />
     <Compile Include="IModel.cs" />
-    <Compile Include="ModelI.cs" />
-    <Compile Include="ModelOrder0C.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="RangeExtensions.cs" />

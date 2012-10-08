@@ -5,17 +5,30 @@ using System.Text;
 
 namespace OneOddSock.Compression.Arithmetic
 {
-    class ZeroOrderAdaptiveByteModel : IModel<uint>
+    /// <summary>
+    /// Sample model for demonstration purposes.
+    /// Zero-order adaptive byte based model using a value of 256 as the terminator.
+    /// </summary>
+    public class ZeroOrderAdaptiveByteModel : IModel<uint>
     {
+        /// <summary>
+        /// The total of frequencies for all symbols represented by the model.
+        /// </summary>
         public uint TotalFrequencies { get; private set; }
 
         private readonly uint[] _charFrequency = new uint[257];
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ZeroOrderAdaptiveByteModel()
         {
             Reset();
         }
 
+        /// <summary>
+        /// The [Low, High) range covered by <paramref name="symbol"/>.
+        /// </summary>
         public Range GetRange(uint symbol)
         {
             // cumulate frequencies
@@ -28,6 +41,9 @@ namespace OneOddSock.Compression.Arithmetic
             return new Range() {Low = low, High = low + _charFrequency[j]};
         }
 
+        /// <summary>
+        /// Update the frequency information of <paramref name="symbol"/>.
+        /// </summary>
         public void Update(uint symbol)
         {
             _charFrequency[symbol]++;
@@ -39,6 +55,9 @@ namespace OneOddSock.Compression.Arithmetic
             }
         }
 
+        /// <summary>
+        /// Finds the symbol for the corresponding <paramref name="value"/>.
+        /// </summary>
         public RangeSymbol<uint> Decode(uint value)
         {
             uint low = 0;
@@ -58,6 +77,9 @@ namespace OneOddSock.Compression.Arithmetic
                        };
         }
 
+        /// <summary>
+        /// Resets the model statistics.
+        /// </summary>
         public void Reset()
         {
             // initialize probabilities with 1

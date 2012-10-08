@@ -33,19 +33,19 @@ namespace OneOddSock.Compression.Arithmetic.Tests
             var stream = new MemoryStream();
             var writer = new BitStreamWriter(stream);
 
-            var encoder = new ModelOrder0C();
-
-            encoder.Encode(() => { return data[curSymbol++]; }, writer.Write, (uint) data.Length);
+            var encoder = new ArithmeticCoder();
+            var model = new ZeroOrderAdaptiveByteModel();
+            encoder.Encode(model, writer.Write, () => { return data[curSymbol++]; }, (uint)data.Length);
             writer.Flush();
             stream.Position = 0;
 
             var reader = new BitStreamReader(stream);
             var decoded = new LinkedList<byte>();
 
-            var decoder = new ModelOrder0C();
+            encoder.Reset();
+            model.Reset();
 
-            decoder.Decode(reader.ConditionalRead,
-                           value => decoded.AddLast(value));
+            encoder.Decode(model, value => decoded.AddLast(value), reader.ConditionalRead);
 
             byte[] decodedBytes = decoded.ToArray();
 
