@@ -112,7 +112,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="RangeExtensions.cs" />
     <Compile Include="RangeSymbol.cs" />
-    <Compile Include="ZeroOrderAdaptiveByteModel.cs" />
+    <Compile Include="TestHacks.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

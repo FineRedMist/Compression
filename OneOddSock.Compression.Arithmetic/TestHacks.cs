@@ -13,6 +13,16 @@
 	limitations under the License.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+/* This file is entirely for providing functionality for testing.
+ * This content will be moved out once other examples have been 
+ * created that don't rely on this level of specificity.
+ */
+
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -101,5 +111,50 @@ namespace OneOddSock.Compression.Arithmetic
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Extensions to the ArithmeticCoding class for testing purposes.
+    /// </summary>
+    public static class ArithmeticCodingTestExtensions
+    {
+        /// <summary>
+        /// Encodes <paramref name="symbolCount"/> symbols read from <paramref name="symbolReader"/>
+        /// writing encoded bits to <paramref name="bitWriter"/>.
+        /// </summary>
+        public static void Encode(this ArithmeticCoder coder, IModel<uint> model, WriteBitDelegate bitWriter,
+                                  ReadSymbolDelegate<byte> symbolReader, uint symbolCount)
+        {
+            for (uint i = 0; i < symbolCount; ++i)
+            {
+                byte symbol = symbolReader();
+
+                coder.Encode(symbol, model, bitWriter);
+            }
+
+            // write escape symbol for termination
+            coder.Encode((uint) 256, model, bitWriter);
+            coder.EncodeFinish(bitWriter);
+        }
+
+        /// <summary>
+        /// Decodes symbols from <paramref name="coder"/> using the provided <paramref name="model"/>.
+        /// </summary>
+        public static void Decode(this ArithmeticCoder coder, IModel<uint> model, WriteSymbolDelegate<byte> symbolWriter,
+                                  ReadBitDelegate bitReader)
+        {
+            coder.DecodeStart(bitReader);
+
+            uint symbol;
+
+            do
+            {
+                symbol = coder.Decode(model, bitReader);
+                if (symbol != 256)
+                {
+                    symbolWriter((byte) symbol);
+                }
+            } while (symbol != 256); // until termination symbol read
+        }
     }
 }
