@@ -14,9 +14,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using OneOddSock.IO;
 
@@ -45,22 +42,13 @@ namespace OneOddSock.Compression.Arithmetic
     /// </summary>
     public class ArithmeticStream : Stream, IDisposable
     {
-        private readonly BitStream _stream;
-        private readonly CompressionMode _mode;
-        private readonly bool _leaveOpen;
-        private bool _eof = false;
-
-        private readonly ArithmeticCoder _coder = new ArithmeticCoder();
         private readonly ZeroOrderAdaptiveByteModel _adaptiveModel = new ZeroOrderAdaptiveByteModel();
+        private readonly ArithmeticCoder _coder = new ArithmeticCoder();
+        private readonly bool _leaveOpen;
+        private readonly CompressionMode _mode;
         private readonly NewCharacterByteModel _newCharacterModel = new NewCharacterByteModel();
-
-        /// <summary>
-        /// Compression mode of the stream.
-        /// </summary>
-        public CompressionMode Mode
-        {
-            get { return _mode; }
-        }
+        private readonly BitStream _stream;
+        private bool _eof;
 
         /// <summary>
         /// Creates a new stream using arithmetic compression on the provided <paramref name="stream"/>.
@@ -70,13 +58,13 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="leaveOpen">Whether to leave the underlying stream open on dispose.</param>
         public ArithmeticStream(Stream stream, CompressionMode mode, bool leaveOpen)
         {
-            _stream = mode == CompressionMode.Compress 
-                ? new BitStreamWriter(stream) as BitStream 
-                : new BitStreamReader(stream) as BitStream;
+            _stream = mode == CompressionMode.Compress
+                          ? new BitStreamWriter(stream)
+                          : new BitStreamReader(stream) as BitStream;
             _mode = mode;
             _leaveOpen = leaveOpen;
 
-            if(mode == CompressionMode.Decompress)
+            if (mode == CompressionMode.Decompress)
             {
                 _coder.DecodeStart(_stream.ReadBoolean);
             }
@@ -90,7 +78,14 @@ namespace OneOddSock.Compression.Arithmetic
         public ArithmeticStream(Stream stream, CompressionMode mode)
             : this(stream, mode, false)
         {
+        }
 
+        /// <summary>
+        /// Compression mode of the stream.
+        /// </summary>
+        public CompressionMode Mode
+        {
+            get { return _mode; }
         }
 
         /// <summary>
@@ -118,19 +113,6 @@ namespace OneOddSock.Compression.Arithmetic
         }
 
         /// <summary>
-        /// Flushes any remaining bits to the stream.
-        /// </summary>
-        public override void Flush()
-        {
-            if(Mode == CompressionMode.Compress)
-            {
-                _coder.Encode(ZeroOrderAdaptiveByteModel.StreamTerminator, _adaptiveModel, _stream.Write);
-                _coder.EncodeFinish(_stream.Write);
-            }
-            _stream.Flush();
-        }
-
-        /// <summary>
         /// Current length of the stream in bytes.
         /// </summary>
         public override long Length
@@ -148,24 +130,50 @@ namespace OneOddSock.Compression.Arithmetic
             set { throw new NotSupportedException(); }
         }
 
+        #region IDisposable Members
+
+        void IDisposable.Dispose()
+        {
+            Flush();
+            if (_stream != null && !_leaveOpen)
+            {
+                _stream.Dispose();
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Flushes any remaining bits to the stream.
+        /// </summary>
+        public override void Flush()
+        {
+            if (Mode == CompressionMode.Compress)
+            {
+                _coder.Encode(ZeroOrderAdaptiveByteModel.StreamTerminator, _adaptiveModel, _stream.Write);
+                _coder.EncodeFinish(_stream.Write);
+            }
+            _stream.Flush();
+        }
+
         /// <summary>
         /// Decompresses <paramref name="count"/> bytes into <paramref name="buffer"/>
         /// starting at <paramref name="offset"/>.
         /// </summary>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if(!CanRead)
+            if (!CanRead)
             {
                 throw new InvalidOperationException();
             }
-            if(_eof)
+            if (_eof)
             {
                 return 0;
             }
-            for(int i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 uint adaptiveSymbol = _coder.Decode(_adaptiveModel, ReadBoolean);
-                switch(adaptiveSymbol)
+                switch (adaptiveSymbol)
                 {
                     case ZeroOrderAdaptiveByteModel.NewCharacter:
                         byte symbol = _coder.Decode(_newCharacterModel, ReadBoolean);
@@ -185,7 +193,7 @@ namespace OneOddSock.Compression.Arithmetic
 
         private bool ReadBoolean()
         {
-            if(!_stream.CanSeek  
+            if (!_stream.CanSeek
                 || _stream.BitPosition < _stream.BitLength)
             {
                 return _stream.ReadBoolean();
@@ -222,25 +230,16 @@ namespace OneOddSock.Compression.Arithmetic
             for (int i = 0; i < count; ++i)
             {
                 byte b = buffer[offset + i];
-                if(_newCharacterModel.Emitted(b))
+                if (_newCharacterModel.Emitted(b))
                 {
-                    _coder.Encode<uint>(b, _adaptiveModel, _stream.Write);
+                    _coder.Encode(b, _adaptiveModel, _stream.Write);
                 }
                 else
                 {
-                    _coder.Encode(ZeroOrderAdaptiveByteModel.NewCharacter, _adaptiveModel, _stream.Write);   
+                    _coder.Encode(ZeroOrderAdaptiveByteModel.NewCharacter, _adaptiveModel, _stream.Write);
                     _coder.Encode(b, _newCharacterModel, _stream.Write);
                     _adaptiveModel.Update(b);
                 }
-            }
-        }
-
-        void IDisposable.Dispose()
-        {
-            Flush();
-            if(_stream != null && !_leaveOpen)
-            {
-                _stream.Dispose();
             }
         }
     }

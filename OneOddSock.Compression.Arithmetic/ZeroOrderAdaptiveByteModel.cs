@@ -13,11 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -25,6 +20,16 @@ namespace OneOddSock.Compression.Arithmetic
     /// </summary>
     internal class ZeroOrderAdaptiveByteModel : IModel<uint>
     {
+        /// <summary>
+        /// New character indicator in the stream.
+        /// </summary>
+        public const uint NewCharacter = 256;
+
+        /// <summary>
+        /// Stream terminator to end processing.
+        /// </summary>
+        public const uint StreamTerminator = 257;
+
         private readonly uint[] _charFrequency = new uint[258];
 
         /// <summary>
@@ -34,15 +39,6 @@ namespace OneOddSock.Compression.Arithmetic
         {
             Reset();
         }
-
-        /// <summary>
-        /// New character indicator in the stream.
-        /// </summary>
-        public const uint NewCharacter = 256;
-        /// <summary>
-        /// Stream terminator to end processing.
-        /// </summary>
-        public const uint StreamTerminator = 257;
 
         #region IModel<uint> Members
 
@@ -74,7 +70,7 @@ namespace OneOddSock.Compression.Arithmetic
             _charFrequency[symbol]++;
             TotalFrequencies++;
 
-            if (symbol != NewCharacter 
+            if (symbol != NewCharacter
                 && _charFrequency[symbol] > 1
                 && _charFrequency[NewCharacter] > 1)
             {

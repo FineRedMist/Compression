@@ -29,11 +29,6 @@ namespace OneOddSock.Compression.Arithmetic
             get { return (uint) (_pendingBytes[index] ? 1 : 0); }
         }
 
-        public bool Emitted(byte index)
-        {
-            return !_pendingBytes[index];
-        }
-
         #region IModel<byte> Members
 
         public uint TotalFrequencies { get; private set; }
@@ -82,11 +77,16 @@ namespace OneOddSock.Compression.Arithmetic
         {
             for (int i = 0; i < _pendingBytes.Length; ++i)
             {
-                _pendingBytes[(byte)i] = true;
+                _pendingBytes[(byte) i] = true;
             }
             TotalFrequencies = 256;
         }
 
         #endregion
+
+        public bool Emitted(byte index)
+        {
+            return !_pendingBytes[index];
+        }
     }
 }
