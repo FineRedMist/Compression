@@ -29,29 +29,23 @@ namespace OneOddSock.Compression.Arithmetic.Tests
         public void TestMethod1()
         {
             byte[] data = Encoding.UTF8.GetBytes(TestResources.RFC5_Text);
-            int curSymbol = 0;
-            var stream = new MemoryStream();
-            var writer = new BitStreamWriter(stream);
 
-            var encoder = new ArithmeticCoder();
-            var model = new ZeroOrderAdaptiveByteModel();
-            encoder.Encode(model, writer.Write, () => { return data[curSymbol++]; }, (uint) data.Length);
-            writer.Flush();
+            var stream = new MemoryStream();
+            var encoder = new ArithmeticStream(stream, CompressionMode.Compress, true);
+
+            encoder.Write(data, 0, data.Length);
+            encoder.Flush();
+
             stream.Position = 0;
 
-            var reader = new BitStreamReader(stream);
-            var decoded = new LinkedList<byte>();
+            var decoder = new ArithmeticStream(stream, CompressionMode.Decompress, true);
+            var decoded = new byte[data.Length];
 
-            encoder.Reset();
-            model.Reset();
+            decoder.Read(decoded, 0, decoded.Length);
 
-            encoder.Decode(model, value => decoded.AddLast(value), reader.ConditionalRead);
+            CollectionAssert.AreEqual(data, decoded);
 
-            byte[] decodedBytes = decoded.ToArray();
-
-            CollectionAssert.AreEqual(data, decodedBytes);
-
-            Assert.AreEqual(16355, stream.Length);
+            Assert.AreEqual(16235, stream.Length);
         }
     }
 }
