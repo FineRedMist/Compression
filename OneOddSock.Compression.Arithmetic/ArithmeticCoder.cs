@@ -13,6 +13,8 @@
 	limitations under the License.
 */
 
+using System;
+
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -28,6 +30,8 @@ namespace OneOddSock.Compression.Arithmetic
         private const uint FirstQuarter = 0x20000000;
         private const uint ThirdQuarter = 0x60000000;
         private const uint Half = 0x40000000;
+        private const uint RangeLimit = ((uint) 1) << 29;
+
         private static readonly Range BoundaryAdjust = new Range {Low = 0, High = 1};
         private uint _buffer;
         private Range _range;
@@ -63,6 +67,18 @@ namespace OneOddSock.Compression.Arithmetic
                            WriteBitDelegate bitWriter)
             // total < 2^29
         {
+            if (total >= RangeLimit)
+            {
+                throw new ArgumentOutOfRangeException("total");
+            }
+            if(counts.Low >= RangeLimit || counts.High >= RangeLimit)
+            {
+                throw new ArgumentOutOfRangeException("counts");
+            }
+            if(bitWriter == null)
+            {
+                throw new ArgumentNullException("bitWriter");
+            }
             // partition number space into single steps
             _step = (_range.Length())/total; // interval open at the top => +1
 
@@ -96,6 +112,10 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="bitWriter"></param>
         public void EncodeFinish(WriteBitDelegate bitWriter)
         {
+            if (bitWriter == null)
+            {
+                throw new ArgumentNullException("bitWriter");
+            }
             // There are two possibilities of how _range.Low and _range.High can be distributed,
             // which means that two bits are enough to distinguish them.
 
@@ -117,6 +137,10 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="bitReader"></param>
         public void DecodeStart(ReadBitDelegate bitReader)
         {
+            if (bitReader == null)
+            {
+                throw new ArgumentNullException("bitReader");
+            }
             // Fill buffer with bits from the input stream
             for (int i = 0; i < 31; i++) // just use the 31 least significant bits
             {
@@ -132,6 +156,10 @@ namespace OneOddSock.Compression.Arithmetic
         public uint DecodeTarget(uint total)
             // total < 2^29
         {
+            if (total >= RangeLimit)
+            {
+                throw new ArgumentOutOfRangeException("total");
+            }
             // split number space into single steps
             _step = (_range.Length())/total; // interval open at the top => +1
 
@@ -146,6 +174,14 @@ namespace OneOddSock.Compression.Arithmetic
         public void Decode(Range counts,
                            ReadBitDelegate bitReader)
         {
+            if (counts.Low >= RangeLimit || counts.High >= RangeLimit)
+            {
+                throw new ArgumentOutOfRangeException("counts");
+            }
+            if (bitReader== null)
+            {
+                throw new ArgumentNullException("bitReader");
+            }
             // Update bounds -- interval open at the top => -1 for High
             _range = (counts*_step + _range.Low) - BoundaryAdjust;
 
