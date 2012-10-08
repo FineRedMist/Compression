@@ -33,7 +33,9 @@ namespace OneOddSock.Compression.Arithmetic
                 uint lowCount = 0;
                 byte j = 0;
                 for (; j < symbol; j++)
+                {
                     lowCount += _charFrequency[j];
+                }
 
                 // encode symbol
                 Coder.Encode(lowCount, lowCount + _charFrequency[j], _totalFrequencies);
@@ -67,7 +69,9 @@ namespace OneOddSock.Compression.Arithmetic
 
                 // determine symbol
                 for (symbol = 0; lowCount + _charFrequency[symbol] <= value; symbol++)
+                {
                     lowCount += _charFrequency[symbol];
+                }
 
                 // write symbol
                 if (symbol < 256)
