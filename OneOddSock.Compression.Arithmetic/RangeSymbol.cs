@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OneOddSock.Compression.Arithmetic
+﻿namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
     /// Provides the range and the corresponding symbol from the model.
@@ -21,5 +16,4 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public TSymbolType Symbol { get; set; }
     }
-
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OneOddSock.Compression.Arithmetic
+﻿namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
     /// Defines the methods required to represent a model for use with arithmetic coding.
