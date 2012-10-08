@@ -26,18 +26,19 @@ namespace OneOddSock.Compression.Arithmetic
         private const uint ThirdQuarter = 0x60000000;
         private const uint Half = 0x40000000;
         private uint _buffer;
-        private uint _high;
-        private uint _low;
+        private Range _range;
         private uint _scale;
         private uint _step;
+
+        private static readonly Range BoundaryAdjust = new Range() {Low = 0, High = 1};
 
         /// <summary>
         /// Constructor
         /// </summary>
         public ArithmeticCoder()
         {
-            _low = 0;
-            _high = 0x7FFFFFFF; // just work with least significant 31 bits
+            _range.Low = 0;
+            _range.High = 0x7FFFFFFF; // just work with least significant 31 bits
             _scale = 0;
 
             _buffer = 0;
@@ -56,45 +57,35 @@ namespace OneOddSock.Compression.Arithmetic
         /// <summary>
         /// Encodes the range updating the state of the encoder.
         /// </summary>
-        /// <param name="lowCount"></param>
-        /// <param name="highCount"></param>
-        /// <param name="total"></param>
-        /// <param name="bitWriter"></param>
-        public void Encode(uint lowCount,
-                           uint highCount,
+        public void Encode(Range counts,
                            uint total,
                            WriteBitDelegate bitWriter)
             // total < 2^29
         {
             // partition number space into single steps
-            _step = (_high - _low + 1)/total; // interval open at the top => +1
+            _step = (_range.Length())/total; // interval open at the top => +1
 
-            // update upper bound
-            _high = _low + _step*highCount - 1; // interval open at the top => -1
-
-            // update lower bound
-            _low = _low + _step*lowCount;
+            // Update bounds -- interval open at the top => -1 for High.
+            _range = (counts*_step + _range.Low) - BoundaryAdjust;
 
             // apply e1/e2 mapping
-            while ((_high < Half) || (_low >= Half))
+            while ((_range.High < Half) || (_range.Low >= Half))
             {
-                bool isHighLessThanHalf = _high < Half; // true => emit false for lower half.
+                bool isHighLessThanHalf = _range.High < Half; // true => emit false for lower half.
                 uint sub = isHighLessThanHalf ? 0 : Half;
 
                 bitWriter(!isHighLessThanHalf);
                 EmitE3Mappings(bitWriter, isHighLessThanHalf);
 
-                _low = 2*(_low - sub);
-                _high = 2*(_high - sub) + 1;
+                _range = (_range - sub)*2 + BoundaryAdjust;
             }
 
             // e3
-            while ((FirstQuarter <= _low) && (_high < ThirdQuarter))
+            while (_range.In(FirstQuarter, ThirdQuarter))
             {
                 // keep necessary e3 mappings in mind
                 _scale++;
-                _low = 2*(_low - FirstQuarter);
-                _high = 2*(_high - FirstQuarter) + 1;
+                _range = (_range - FirstQuarter)*2 + BoundaryAdjust;
             }
         }
 
@@ -104,10 +95,10 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="bitWriter"></param>
         public void EncodeFinish(WriteBitDelegate bitWriter)
         {
-            // There are two possibilities of how _low and _high can be distributed,
+            // There are two possibilities of how _range.Low and _range.High can be distributed,
             // which means that two bits are enough to distinguish them.
 
-            bool isLowGreaterThanFirstQuarter = _low >= FirstQuarter;
+            bool isLowGreaterThanFirstQuarter = _range.Low >= FirstQuarter;
             bitWriter(isLowGreaterThanFirstQuarter);
 
             ++_scale; // Ensures at least one additional bit is written.
@@ -139,48 +130,39 @@ namespace OneOddSock.Compression.Arithmetic
             // total < 2^29
         {
             // split number space into single steps
-            _step = (_high - _low + 1)/total; // interval open at the top => +1
+            _step = (_range.Length())/total; // interval open at the top => +1
 
             // return current value
-            return (_buffer - _low)/_step;
+            return (_buffer - _range.Low)/_step;
         }
 
 
         /// <summary>
         /// Updates the decoder based on the provided range.
         /// </summary>
-        /// <param name="lowCount"></param>
-        /// <param name="highCount"></param>
-        /// <param name="bitReader"></param>
-        public void Decode(uint lowCount,
-                           uint highCount,
+        public void Decode(Range counts,
                            ReadBitDelegate bitReader)
         {
-            // update upper bound
-            _high = _low + _step*highCount - 1; // interval open at the top => -1
-
-            // update lower bound
-            _low = _low + _step*lowCount;
+            // Update bounds -- interval open at the top => -1 for High
+            _range = (counts*_step + _range.Low) - BoundaryAdjust;
 
             // e1/e2 mapping
-            while ((_high < Half) || (_low >= Half))
+            while ((_range.High < Half) || (_range.Low >= Half))
             {
-                bool isHighLessThanHalf = _high < Half; // true => emit false for lower half.
+                bool isHighLessThanHalf = _range.High < Half; // true => emit false for lower half.
                 uint sub = isHighLessThanHalf ? 0 : Half;
 
-                _low = 2*(_low - sub);
-                _high = 2*(_high - sub) + 1;
-                _buffer = 2*(_buffer - sub) + ((uint) (bitReader() ? 1 : 0));
+                _range = (_range - sub)*2 + BoundaryAdjust;
+                _buffer = (_buffer - sub)*2 + ((uint) (bitReader() ? 1 : 0));
 
                 _scale = 0;
             }
 
             // e3 mapping
-            while ((FirstQuarter <= _low) && (_high < ThirdQuarter))
+            while (_range.In(FirstQuarter, ThirdQuarter))
             {
                 _scale++;
-                _low = 2*(_low - FirstQuarter);
-                _high = 2*(_high - FirstQuarter) + 1;
+                _range = (_range - FirstQuarter)*2 + BoundaryAdjust;
                 _buffer = 2*(_buffer - FirstQuarter) + ((uint) (bitReader() ? 1 : 0));
             }
         }

@@ -109,6 +109,8 @@
     <Compile Include="ModelI.cs" />
     <Compile Include="ModelOrder0C.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="RangeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

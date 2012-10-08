@@ -49,15 +49,16 @@ namespace OneOddSock.Compression.Arithmetic
                 byte symbol = SymbolReader();
 
                 // cumulate frequencies
-                uint lowCount = 0;
+                Range count = new Range() {Low = 0, High = 0};
                 byte j = 0;
                 for (; j < symbol; j++)
                 {
-                    lowCount += _charFrequency[j];
+                    count.Low += _charFrequency[j];
                 }
+                count.High = count.Low + _charFrequency[j];
 
                 // encode symbol
-                Coder.Encode(lowCount, lowCount + _charFrequency[j], _totalFrequencies, BitWriter);
+                Coder.Encode(count, _totalFrequencies, BitWriter);
 
                 // update model
                 _charFrequency[symbol]++;
@@ -70,7 +71,8 @@ namespace OneOddSock.Compression.Arithmetic
             }
 
             // write escape symbol for termination
-            Coder.Encode(_totalFrequencies - 1, _totalFrequencies, _totalFrequencies, BitWriter);
+            Range terminator = new Range() { Low = _totalFrequencies - 1, High = _totalFrequencies };
+            Coder.Encode(terminator, _totalFrequencies, BitWriter);
         }
 
         /// <summary>
@@ -87,12 +89,12 @@ namespace OneOddSock.Compression.Arithmetic
                 // read value
                 value = Coder.DecodeTarget(_totalFrequencies);
 
-                uint lowCount = 0;
+                Range counts = new Range() {Low = 0, High = 0};
 
                 // determine symbol
-                for (symbol = 0; lowCount + _charFrequency[symbol] <= value; symbol++)
+                for (symbol = 0; counts.Low + _charFrequency[symbol] <= value; symbol++)
                 {
-                    lowCount += _charFrequency[symbol];
+                    counts.Low += _charFrequency[symbol];
                 }
 
                 // write symbol
@@ -106,7 +108,8 @@ namespace OneOddSock.Compression.Arithmetic
                 }
 
                 // adapt decoder
-                Coder.Decode(lowCount, lowCount + _charFrequency[symbol], BitReader);
+                counts.High = counts.Low + _charFrequency[symbol];
+                Coder.Decode(counts, BitReader);
 
                 // update model
                 _charFrequency[symbol]++;

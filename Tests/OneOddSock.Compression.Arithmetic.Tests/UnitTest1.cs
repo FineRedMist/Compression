@@ -50,6 +50,9 @@ namespace OneOddSock.Compression.Arithmetic.Tests
             byte[] decodedBytes = decoded.ToArray();
 
             CollectionAssert.AreEqual(data, decodedBytes);
+
+            // Original data size: 27350
+            // Compressed size: 16355
         }
     }
 }
