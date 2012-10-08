@@ -1,7 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/*	Copyright 2012 Brent Scriver
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
 
 namespace OneOddSock.Compression.Arithmetic
 {
@@ -11,11 +21,6 @@ namespace OneOddSock.Compression.Arithmetic
     /// </summary>
     public class ZeroOrderAdaptiveByteModel : IModel<uint>
     {
-        /// <summary>
-        /// The total of frequencies for all symbols represented by the model.
-        /// </summary>
-        public uint TotalFrequencies { get; private set; }
-
         private readonly uint[] _charFrequency = new uint[257];
 
         /// <summary>
@@ -25,6 +30,13 @@ namespace OneOddSock.Compression.Arithmetic
         {
             Reset();
         }
+
+        #region IModel<uint> Members
+
+        /// <summary>
+        /// The total of frequencies for all symbols represented by the model.
+        /// </summary>
+        public uint TotalFrequencies { get; private set; }
 
         /// <summary>
         /// The [Low, High) range covered by <paramref name="symbol"/>.
@@ -38,7 +50,7 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 low += _charFrequency[j];
             }
-            return new Range() {Low = low, High = low + _charFrequency[j]};
+            return new Range {Low = low, High = low + _charFrequency[j]};
         }
 
         /// <summary>
@@ -66,13 +78,13 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 low += _charFrequency[symbol];
             }
-            return new RangeSymbol<uint>()
+            return new RangeSymbol<uint>
                        {
-                           Range = new Range()
+                           Range = new Range
                                        {
-                                           Low = low, 
+                                           Low = low,
                                            High = low + _charFrequency[symbol]
-                                       }, 
+                                       },
                            Symbol = symbol
                        };
         }
@@ -87,5 +99,7 @@ namespace OneOddSock.Compression.Arithmetic
             for (uint i = 0; i < 257; i++)
                 _charFrequency[i] = 1;
         }
+
+        #endregion
     }
 }
