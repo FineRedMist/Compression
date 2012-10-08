@@ -1,6 +1,9 @@
 ﻿namespace OneOddSock.Compression.Arithmetic
 {
-    internal class ArithmeticCoder
+    /// <summary>
+    /// Arithmetic coder using integer ranges.
+    /// </summary>
+    public class ArithmeticCoder
     {
         // constants to split the number space of 32 bit integers
         // most significant bit kept free to prevent overflows
@@ -13,6 +16,9 @@
         private uint _scale;
         private uint _step;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ArithmeticCoder()
         {
             _low = 0;
@@ -23,8 +29,6 @@
             _step = 0;
         }
 
-        public ReadBitDelegate BitReader { get; set; }
-
         private void EmitE3Mappings(WriteBitDelegate bitWriter, bool value)
         {
             // perform e3 mappings
@@ -34,6 +38,13 @@
             }
         }
 
+        /// <summary>
+        /// Encodes the range updating the state of the encoder.
+        /// </summary>
+        /// <param name="lowCount"></param>
+        /// <param name="highCount"></param>
+        /// <param name="total"></param>
+        /// <param name="bitWriter"></param>
         public void Encode(uint lowCount,
                            uint highCount,
                            uint total,
@@ -71,6 +82,10 @@
             }
         }
 
+        /// <summary>
+        /// Finishes encoding, writing any remaining bits.
+        /// </summary>
+        /// <param name="bitWriter"></param>
         public void EncodeFinish(WriteBitDelegate bitWriter)
         {
             // There are two possibilities of how _low and _high can be distributed,
@@ -83,15 +98,24 @@
             EmitE3Mappings(bitWriter, !isLowGreaterThanFirstQuarter);
         }
 
-        public void DecodeStart()
+        /// <summary>
+        /// Initializes the decoder by reading the first set of values for the state.
+        /// </summary>
+        /// <param name="bitReader"></param>
+        public void DecodeStart(ReadBitDelegate bitReader)
         {
             // Fill buffer with bits from the input stream
             for (int i = 0; i < 31; i++) // just use the 31 least significant bits
             {
-                _buffer = (_buffer << 1) | ((uint) (BitReader() ? 1 : 0));
+                _buffer = (_buffer << 1) | ((uint) (bitReader() ? 1 : 0));
             }
         }
 
+        /// <summary>
+        /// Retrieves a symbol given the total frequency range.
+        /// </summary>
+        /// <param name="total"></param>
+        /// <returns></returns>
         public uint DecodeTarget(uint total)
             // total < 2^29
         {
@@ -103,8 +127,15 @@
         }
 
 
+        /// <summary>
+        /// Updates the decoder based on the provided range.
+        /// </summary>
+        /// <param name="lowCount"></param>
+        /// <param name="highCount"></param>
+        /// <param name="bitReader"></param>
         public void Decode(uint lowCount,
-                           uint highCount)
+                           uint highCount,
+                           ReadBitDelegate bitReader)
         {
             // update upper bound
             _high = _low + _step*highCount - 1; // interval open at the top => -1
@@ -115,18 +146,13 @@
             // e1/e2 mapping
             while ((_high < Half) || (_low >= Half))
             {
-                if (_high < Half)
-                {
-                    _low = _low*2;
-                    _high = _high*2 + 1;
-                    _buffer = (uint) (2*_buffer + (BitReader() ? 1 : 0));
-                }
-                else if (_low >= Half)
-                {
-                    _low = 2*(_low - Half);
-                    _high = 2*(_high - Half) + 1;
-                    _buffer = 2*(_buffer - Half) + ((uint) (BitReader() ? 1 : 0));
-                }
+                bool isHighLessThanHalf = _high < Half; // true => emit false for lower half.
+                uint sub = isHighLessThanHalf ? 0 : Half;
+
+                _low = 2*(_low - sub);
+                _high = 2*(_high - sub) + 1;
+                _buffer = 2*(_buffer - sub) + ((uint) (bitReader() ? 1 : 0));
+
                 _scale = 0;
             }
 
@@ -136,7 +162,7 @@
                 _scale++;
                 _low = 2*(_low - FirstQuarter);
                 _high = 2*(_high - FirstQuarter) + 1;
-                _buffer = 2*(_buffer - FirstQuarter) + ((uint) (BitReader() ? 1 : 0));
+                _buffer = 2*(_buffer - FirstQuarter) + ((uint) (bitReader() ? 1 : 0));
             }
         }
     };

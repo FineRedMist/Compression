@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OneOddSock.Compression.Arithmetic
+﻿namespace OneOddSock.Compression.Arithmetic
 {
-    internal class ModelOrder0C : ModelI
+    /// <summary>
+    /// Zero order dynamic model of the byte distribution.
+    /// </summary>
+    public class ModelOrder0C : ModelI
     {
         private readonly uint[] _charFrequency = new uint[257];
         private uint _totalFrequencies;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ModelOrder0C()
         {
             ResetModel();
@@ -23,6 +24,9 @@ namespace OneOddSock.Compression.Arithmetic
                 _charFrequency[i] = 1;
         }
 
+        /// <summary>
+        /// Encodes <paramref name="symbolCount"/> symbols.
+        /// </summary>
         protected override void Encode(uint symbolCount)
         {
             for (uint i = 0; i < symbolCount; ++i)
@@ -38,7 +42,7 @@ namespace OneOddSock.Compression.Arithmetic
                 }
 
                 // encode symbol
-                Coder.Encode(lowCount, lowCount + _charFrequency[j], _totalFrequencies);
+                Coder.Encode(lowCount, lowCount + _charFrequency[j], _totalFrequencies, BitWriter);
 
                 // update model
                 _charFrequency[symbol]++;
@@ -51,9 +55,12 @@ namespace OneOddSock.Compression.Arithmetic
             }
 
             // write escape symbol for termination
-            Coder.Encode(_totalFrequencies - 1, _totalFrequencies, _totalFrequencies);
+            Coder.Encode(_totalFrequencies - 1, _totalFrequencies, _totalFrequencies, BitWriter);
         }
 
+        /// <summary>
+        /// Decodes.
+        /// </summary>
         protected override void Decode()
         {
             uint symbol;
@@ -76,11 +83,11 @@ namespace OneOddSock.Compression.Arithmetic
                 // write symbol
                 if (symbol < 256)
                 {
-                    SymbolWriter((byte)symbol);
+                    SymbolWriter((byte) symbol);
                 }
 
                 // adapt decoder
-                Coder.Decode(lowCount, lowCount + _charFrequency[symbol]);
+                Coder.Decode(lowCount, lowCount + _charFrequency[symbol], BitReader);
 
                 // update model
                 _charFrequency[symbol]++;
