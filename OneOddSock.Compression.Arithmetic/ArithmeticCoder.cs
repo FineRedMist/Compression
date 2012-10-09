@@ -20,8 +20,8 @@ namespace OneOddSock.Compression.Arithmetic
     /// <summary>
     /// Arithmetic coder using integer ranges.
     /// 
-    /// This is based on the implementation by Eric Bodden 
-    /// at: http://www.bodden.de/legacy/arithmetic-coding/
+    /// This is based on the implementation by Malte Clasen and 
+    /// Eric Bodden at: http://www.bodden.de/legacy/arithmetic-coding/.
     /// </summary>
     public class ArithmeticCoder
     {
