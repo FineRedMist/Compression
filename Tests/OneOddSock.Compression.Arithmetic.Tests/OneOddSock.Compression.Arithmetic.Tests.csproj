@@ -49,7 +49,7 @@
     <Compile Include="BitReaderExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestResources.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ArithmeticStream_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj">

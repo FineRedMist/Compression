@@ -23,10 +23,10 @@ using OneOddSock.IO;
 namespace OneOddSock.Compression.Arithmetic.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ArithmeticStream_Tests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Verify27K()
         {
             byte[] data = Encoding.UTF8.GetBytes(TestResources.RFC5_Text);
 
