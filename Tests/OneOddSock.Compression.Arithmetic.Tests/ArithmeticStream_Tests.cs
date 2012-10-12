@@ -45,7 +45,7 @@ namespace OneOddSock.Compression.Arithmetic.Tests
 
             CollectionAssert.AreEqual(data, decoded);
 
-            Assert.AreEqual(16235, stream.Length);
+            Assert.AreEqual(16236, stream.Length);
         }
     }
 }

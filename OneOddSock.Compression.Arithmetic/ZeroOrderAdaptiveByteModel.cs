@@ -13,6 +13,8 @@
 	limitations under the License.
 */
 
+using System.Collections.Generic;
+
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -30,14 +32,22 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public const uint StreamTerminator = 257;
 
-        private readonly uint[] _charFrequency = new uint[258];
+        private readonly IEnumerable<KeyValuePair<uint, uint>> _initialWeights = new[]
+                                                                                     {
+                                                                                         new KeyValuePair<uint, uint>(
+                                                                                             NewCharacter, 10),
+                                                                                         new KeyValuePair<uint, uint>(
+                                                                                             StreamTerminator, 1)
+                                                                                     };
+
+        private readonly PartialSumTreeByte _stats;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public ZeroOrderAdaptiveByteModel()
         {
-            Reset();
+            _stats = new PartialSumTreeByte(257, _initialWeights);
         }
 
         #region IModel<uint> Members
@@ -45,21 +55,17 @@ namespace OneOddSock.Compression.Arithmetic
         /// <summary>
         /// The total of frequencies for all symbols represented by the model.
         /// </summary>
-        public uint TotalFrequencies { get; private set; }
+        public uint TotalFrequencies
+        {
+            get { return _stats.Total; }
+        }
 
         /// <summary>
         /// The [Low, High) range covered by <paramref name="symbol"/>.
         /// </summary>
         public Range GetRange(uint symbol)
         {
-            // cumulate frequencies
-            uint low = 0;
-            int j = 0;
-            for (; j < symbol; j++)
-            {
-                low += _charFrequency[j];
-            }
-            return new Range {Low = low, High = low + _charFrequency[j]};
+            return _stats[symbol];
         }
 
         /// <summary>
@@ -67,15 +73,13 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public void Update(uint symbol)
         {
-            _charFrequency[symbol]++;
-            TotalFrequencies++;
+            _stats.UpdateWeight(symbol, 1);
 
             if (symbol != NewCharacter
-                && _charFrequency[symbol] > 1
-                && _charFrequency[NewCharacter] > 1)
+                && _stats.GetWeight(symbol) > 1
+                && _stats.GetWeight(NewCharacter) > 1)
             {
-                _charFrequency[NewCharacter]--;
-                TotalFrequencies--;
+                _stats.UpdateWeight(NewCharacter, -1);
             }
 
             if (TotalFrequencies >= (1 << 29))
@@ -89,19 +93,11 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public RangeSymbol<uint> Decode(uint value)
         {
-            uint low = 0;
-            uint symbol = 0;
-            for (; low + _charFrequency[symbol] <= value; symbol++)
-            {
-                low += _charFrequency[symbol];
-            }
+            uint symbol = _stats.GetSymbol(value);
+
             return new RangeSymbol<uint>
                        {
-                           Range = new Range
-                                       {
-                                           Low = low,
-                                           High = low + _charFrequency[symbol]
-                                       },
+                           Range = _stats[symbol],
                            Symbol = symbol
                        };
         }
@@ -111,12 +107,8 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public void Reset()
         {
-            // initialize probabilities with 1
-            for (uint i = 0; i < _charFrequency.Length - 2; i++)
-                _charFrequency[i] = 0;
-            _charFrequency[NewCharacter] = 10;
-            _charFrequency[StreamTerminator] = 1;
-            TotalFrequencies = _charFrequency[NewCharacter] + _charFrequency[StreamTerminator];
+            _stats.Reset();
+            _stats.UpdateWeights(_initialWeights);
         }
 
         #endregion
