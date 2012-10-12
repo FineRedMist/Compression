@@ -40,14 +40,14 @@ namespace OneOddSock.Compression.Arithmetic
                                                                                              StreamTerminator, 1)
                                                                                      };
 
-        private readonly PartialSumTreeByte _stats;
+        private readonly PartialSumTreeFixedSize _stats;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public ZeroOrderAdaptiveByteModel()
         {
-            _stats = new PartialSumTreeByte(257, _initialWeights);
+            _stats = new PartialSumTreeFixedSize(257, _initialWeights);
         }
 
         #region IModel<uint> Members
@@ -57,7 +57,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public uint TotalFrequencies
         {
-            get { return _stats.Total; }
+            get { return _stats.TotalWeight; }
         }
 
         /// <summary>

@@ -17,11 +17,11 @@ namespace OneOddSock.Compression.Arithmetic
 {
     internal class NewCharacterByteModel : IModel<byte>
     {
-        private readonly PartialSumTreeByte _stats;
+        private readonly PartialSumTreeFixedSize _stats;
 
         public NewCharacterByteModel()
         {
-            _stats = new PartialSumTreeByte(byte.MaxValue);
+            _stats = new PartialSumTreeFixedSize(byte.MaxValue);
             Init();
         }
 
@@ -40,7 +40,7 @@ namespace OneOddSock.Compression.Arithmetic
 
         #region IModel<byte> Members
 
-        public uint TotalFrequencies { get { return _stats.Total; } }
+        public uint TotalFrequencies { get { return _stats.TotalWeight; } }
 
         public Range GetRange(byte symbol)
         {
