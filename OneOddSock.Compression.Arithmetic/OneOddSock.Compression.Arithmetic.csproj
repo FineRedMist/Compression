@@ -110,6 +110,7 @@
     <Compile Include="ArithmeticStream.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="NewCharacterByteModel.cs" />
+    <Compile Include="PartialSumTreeByte.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="RangeExtensions.cs" />
