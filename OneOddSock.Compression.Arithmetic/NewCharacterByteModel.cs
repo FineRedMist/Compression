@@ -17,21 +17,30 @@ namespace OneOddSock.Compression.Arithmetic
 {
     internal class NewCharacterByteModel : IModel<byte>
     {
-        private readonly bool[] _pendingBytes = new bool[256];
+        private readonly PartialSumTreeByte _stats;
 
         public NewCharacterByteModel()
         {
-            Reset();
+            _stats = new PartialSumTreeByte(byte.MaxValue);
+            Init();
         }
 
         private uint this[byte index]
         {
-            get { return (uint) (_pendingBytes[index] ? 1 : 0); }
+            get { return _stats.GetWeight(index); }
+        }
+
+        private void Init()
+        {
+            for(uint symbol = 0; symbol <= byte.MaxValue; ++symbol)
+            {
+                _stats.UpdateWeight(symbol, 1);
+            }
         }
 
         #region IModel<byte> Members
 
-        public uint TotalFrequencies { get; private set; }
+        public uint TotalFrequencies { get { return _stats.Total; } }
 
         public Range GetRange(byte symbol)
         {
@@ -47,46 +56,34 @@ namespace OneOddSock.Compression.Arithmetic
 
         public void Update(byte symbol)
         {
-            if (_pendingBytes[symbol])
+            if (_stats.GetWeight(symbol) > 0)
             {
-                _pendingBytes[symbol] = false;
-                --TotalFrequencies;
+                _stats.UpdateWeight(symbol, -1);
             }
         }
 
         public RangeSymbol<byte> Decode(uint value)
         {
-            uint low = 0;
-            byte symbol = 0;
-            for (; low + this[symbol] <= value; symbol++)
-            {
-                low += this[symbol];
-            }
+            byte symbol = (byte) _stats.GetSymbol(value);
+
             return new RangeSymbol<byte>
                        {
-                           Range = new Range
-                                       {
-                                           Low = low,
-                                           High = low + 1
-                                       },
+                           Range = _stats[symbol],
                            Symbol = symbol
                        };
         }
 
         public void Reset()
         {
-            for (int i = 0; i < _pendingBytes.Length; ++i)
-            {
-                _pendingBytes[(byte) i] = true;
-            }
-            TotalFrequencies = 256;
+            _stats.Reset();
+            Init();
         }
 
         #endregion
 
         public bool Emitted(byte index)
         {
-            return !_pendingBytes[index];
+            return this[index] == 0;
         }
     }
 }
