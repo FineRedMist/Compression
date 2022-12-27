@@ -1,7 +1,5 @@
 Libraries for handling Endian conversion, serialization, and compression.
 
-Currently C# only.  The functionality will be extended to C/C++ as well.
-
 Note: C# libraries now require the following tools installed to compile:
 * Portable Library Tools: http://msdn.microsoft.com/en-us/library/gg597391.aspx
 * Code Contracts: http://research.microsoft.com/en-us/projects/contracts/
