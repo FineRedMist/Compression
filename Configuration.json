@@ -1,0 +1,50 @@
+{
+  "Version": "1.0.3",
+  "NugetSource": "http://coriander:8081/repository/nuget-hosted",
+  "NugetKeyCredentialsId": "Nexus-NuGet-API-Key",
+  "SendSlack": true,
+  "SendSlackStartNotification": true,
+  "SlackChannel": "#build-notifications",
+  "GitHubStatusName": "Build Status",
+  "GitHubStatusCredentialsId": "GitHub-Status-Notify",
+  "CoverageThresholds": [
+    {
+      "thresholdTarget": "Group",
+      "unhealthyThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Package",
+      "unhealthyThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "File",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Class",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Method",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Instruction",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Line",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    },
+    {
+      "thresholdTarget": "Conditional",
+      "unhealthyThreshold": 0.0,
+      "unstableThreshold": 0.0
+    }
+  ]
+}

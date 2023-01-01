@@ -13,9 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
-
 namespace OneOddSock.IO
 {
     /// <summary>
@@ -24,14 +21,6 @@ namespace OneOddSock.IO
     /// </summary>
     public class BitStreamWriter : BitStream
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStreamWriter"/> class.
-        /// </summary>
-        public BitStreamWriter()
-            : base(null, false)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStreamWriter"/> class
         /// with backing <paramref name="stream"/>.  The stream will be automatically
@@ -180,7 +169,7 @@ namespace OneOddSock.IO
         /// </summary>
         public override long BitLength
         {
-            get { return Math.Max(BaseStream.Length*8, BitPosition); }
+            get { return Math.Max(BaseStream.Length * 8, BitPosition); }
         }
 
         /// <summary>
@@ -188,7 +177,7 @@ namespace OneOddSock.IO
         /// </summary>
         public override long BitPosition
         {
-            get { return BaseStream.Position*8 + BitBuffer.LengthBits; }
+            get { return BaseStream.Position * 8 + BitBuffer.LengthBits; }
         }
 
         /// <summary>

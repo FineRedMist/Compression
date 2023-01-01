@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System.IO;
 using System.Text;
 
 namespace OneOddSock.IO
@@ -59,14 +58,6 @@ namespace OneOddSock.IO
         /// </summary>
         public BitBinaryWriter(BitStream stream)
             : this(stream, Encoding.UTF8)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneOddSock.IO.BitBinaryWriter"/> class.
-        /// </summary>
-        public BitBinaryWriter()
-            : this(null, Encoding.UTF8)
         {
         }
 

@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using System.Text;
 
 namespace OneOddSock.IO
@@ -56,14 +54,6 @@ namespace OneOddSock.IO
         /// </summary>
         public EndianWriter(Stream stream)
             : this(stream, Encoding.UTF8)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneOddSock.IO.EndianWriter"/> class.
-        /// </summary>
-        public EndianWriter()
-            : this(null, Encoding.UTF8)
         {
         }
 
@@ -184,7 +174,7 @@ namespace OneOddSock.IO
         /// </summary>
         public override void Write(sbyte value)
         {
-            _target.Write((byte) value);
+            _target.Write((byte)value);
         }
 
         /// <summary>
