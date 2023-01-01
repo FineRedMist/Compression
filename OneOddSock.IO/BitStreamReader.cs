@@ -13,9 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
-
 namespace OneOddSock.IO
 {
     /// <summary>
@@ -24,14 +21,6 @@ namespace OneOddSock.IO
     /// </summary>
     public class BitStreamReader : BitStream
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStreamReader"/> class.
-        /// </summary>
-        public BitStreamReader()
-            : base(null, false)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStreamReader"/> class
         /// with backing <paramref name="stream"/>.  The stream will be automatically
@@ -184,7 +173,7 @@ namespace OneOddSock.IO
         /// </summary>
         public override long BitLength
         {
-            get { return Length*8; }
+            get { return Length * 8; }
         }
 
         /// <summary>
@@ -192,7 +181,7 @@ namespace OneOddSock.IO
         /// </summary>
         public override long BitPosition
         {
-            get { return BaseStream.Position*8 - BitBuffer.LengthBits; }
+            get { return BaseStream.Position * 8 - BitBuffer.LengthBits; }
         }
 
         /// <summary>
@@ -319,7 +308,7 @@ namespace OneOddSock.IO
             int result = BaseStream.ReadByte();
             if (result >= 0)
             {
-                BitBuffer.Write((byte) result);
+                BitBuffer.Write((byte)result);
             }
             return result;
         }

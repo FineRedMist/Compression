@@ -13,9 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -35,7 +32,7 @@ namespace OneOddSock.Compression.Arithmetic
         public PartialSumTreeFixedSize(uint maxSymbolValue)
         {
             _symbolCount = maxSymbolValue + 1;
-            _weights = new uint[2*_symbolCount - 1];
+            _weights = new uint[2 * _symbolCount - 1];
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="maxSymbolValue">Maximum symbol value supported.</param>
         /// <param name="initialSymbolWeights">Initial set of weights to set on the tree.</param>
         public PartialSumTreeFixedSize(uint maxSymbolValue, params KeyValuePair<uint, uint>[] initialSymbolWeights)
-            : this(maxSymbolValue, (IEnumerable<KeyValuePair<uint, uint>>) initialSymbolWeights)
+            : this(maxSymbolValue, (IEnumerable<KeyValuePair<uint, uint>>)initialSymbolWeights)
         {
         }
 
@@ -91,7 +88,7 @@ namespace OneOddSock.Compression.Arithmetic
                 do
                 {
                     // Right children include the current node in the sum
-                    if (child == 2*current + 2)
+                    if (child == 2 * current + 2)
                     {
                         low += _weights[current];
                     }
@@ -99,7 +96,7 @@ namespace OneOddSock.Compression.Arithmetic
                     current = (current - 1) >> 1;
                 } while (child != 0);
 
-                return new Range {Low = low, High = low + currentWeight};
+                return new Range { Low = low, High = low + currentWeight };
             }
         }
 
@@ -114,7 +111,7 @@ namespace OneOddSock.Compression.Arithmetic
             // Until we hit a leaf node
             while (current < _symbolCount - 1)
             {
-                uint leftChild = 2*current + 1;
+                uint leftChild = 2 * current + 1;
                 uint rightChild = leftChild + 1;
                 if (value < _weights[current])
                 {
@@ -168,7 +165,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="initialSymbolWeights">Initial set of weights to set on the tree.</param>
         public void Reset(params KeyValuePair<uint, uint>[] initialSymbolWeights)
         {
-            Reset((IEnumerable<KeyValuePair<uint, uint>>) initialSymbolWeights);
+            Reset((IEnumerable<KeyValuePair<uint, uint>>)initialSymbolWeights);
         }
 
         /// <summary>
@@ -183,7 +180,7 @@ namespace OneOddSock.Compression.Arithmetic
                 int weight;
                 checked
                 {
-                    weight = (int) symbolWeight.Value;
+                    weight = (int)symbolWeight.Value;
                 }
                 UpdateWeight(symbolWeight.Key, weight);
             }
@@ -196,7 +193,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="symbolWeights">Initial set of weights to set on the tree.</param>
         public void UpdateWeights(params KeyValuePair<uint, uint>[] symbolWeights)
         {
-            UpdateWeights((IEnumerable<KeyValuePair<uint, uint>>) symbolWeights);
+            UpdateWeights((IEnumerable<KeyValuePair<uint, uint>>)symbolWeights);
         }
 
         /// <summary>
@@ -214,23 +211,23 @@ namespace OneOddSock.Compression.Arithmetic
             uint current = GetArrayIndexForSymbol(symbol);
             uint oldWeight = _weights[current];
 
-            uint child = 2*current + 1; // Compute the left child index
+            uint child = 2 * current + 1; // Compute the left child index
 
             do
             {
                 // Left children increase the current node weight
-                if (child == 2*current + 1)
+                if (child == 2 * current + 1)
                 {
                     checked
                     {
-                        _weights[current] = (uint) (_weights[current] + delta);
+                        _weights[current] = (uint)(_weights[current] + delta);
                     }
                 }
                 child = current;
                 current = (current - 1) >> 1;
             } while (child != 0);
 
-            TotalWeight = (uint) (TotalWeight + delta);
+            TotalWeight = (uint)(TotalWeight + delta);
 
             return oldWeight;
         }

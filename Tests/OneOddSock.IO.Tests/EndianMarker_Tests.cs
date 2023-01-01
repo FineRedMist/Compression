@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -28,45 +27,45 @@ namespace BitStreamTests
         [TestMethod]
         public void LittleEndian_LittleNative()
         {
-            var data = new byte[] {0x2d, 0xaf, 0x45, 0x32, 0x1a, 0x2b, 0x3c, 0x4d};
+            var data = new byte[] { 0x2d, 0xaf, 0x45, 0x32, 0x1a, 0x2b, 0x3c, 0x4d };
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             Assert.AreEqual(reader, reader.ProcessEndianMarker(EndianMarker_Little));
-            Assert.AreEqual((uint) 0x4d3c2b1a, reader.ReadUInt32());
+            Assert.AreEqual((uint)0x4d3c2b1a, reader.ReadUInt32());
         }
 
         [TestMethod]
         public void BigEndian_LittleNative()
         {
-            var data = new byte[] {0x32, 0x45, 0xaf, 0x2d, 0x1a, 0x2b, 0x3c, 0x4d};
+            var data = new byte[] { 0x32, 0x45, 0xaf, 0x2d, 0x1a, 0x2b, 0x3c, 0x4d };
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var ereader = reader.ProcessEndianMarker(EndianMarker_Little) as EndianReader;
             Assert.AreNotEqual(reader, ereader);
-            Assert.AreEqual(Endian.Big, ereader.Endian);
-            Assert.AreEqual((uint) 0x1a2b3c4d, ereader.ReadUInt32());
+            Assert.AreEqual(Endian.Big, ereader!.Endian);
+            Assert.AreEqual((uint)0x1a2b3c4d, ereader.ReadUInt32());
         }
 
         [TestMethod]
         public void BigEndian_BigNative()
         {
-            var data = new byte[] {0x2d, 0xaf, 0x45, 0x32, 0x1a, 0x2b, 0x3c, 0x4d};
+            var data = new byte[] { 0x2d, 0xaf, 0x45, 0x32, 0x1a, 0x2b, 0x3c, 0x4d };
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var ereader = reader.ProcessEndianMarker(EndianMarker_Big) as EndianReader;
             Assert.AreNotEqual(reader, ereader);
-            Assert.AreEqual((uint) 0x1a2b3c4d, ereader.ReadUInt32());
+            Assert.AreEqual((uint)0x1a2b3c4d, ereader!.ReadUInt32());
         }
 
         [TestMethod]
         public void LittleEndian_BigNative()
         {
-            var data = new byte[] {0x32, 0x45, 0xaf, 0x2d, 0x1a, 0x2b, 0x3c, 0x4d};
+            var data = new byte[] { 0x32, 0x45, 0xaf, 0x2d, 0x1a, 0x2b, 0x3c, 0x4d };
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             BinaryReader ereader = reader.ProcessEndianMarker(EndianMarker_Big);
             Assert.AreEqual(reader, ereader);
-            Assert.AreEqual((uint) 0x4d3c2b1a, ereader.ReadUInt32());
+            Assert.AreEqual((uint)0x4d3c2b1a, ereader.ReadUInt32());
         }
     }
 }

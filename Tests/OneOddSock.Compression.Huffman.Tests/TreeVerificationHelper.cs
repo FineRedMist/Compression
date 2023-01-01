@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace OneOddSock.Compression.Huffman.Tests

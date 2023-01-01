@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -30,7 +29,7 @@ namespace BitStreamTests
             Assert.AreEqual(0, streamer.UsedBytes);
             Assert.AreEqual(0, streamer.LengthBytes);
             Assert.AreEqual(0, streamer.LengthBits);
-            Assert.AreEqual(0x100*8, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8, streamer.AvailableBits);
         }
 
         [TestMethod]
@@ -42,7 +41,7 @@ namespace BitStreamTests
             Assert.AreEqual(1, streamer.UsedBytes);
             Assert.AreEqual(0, streamer.LengthBytes);
             Assert.AreEqual(1, streamer.LengthBits);
-            Assert.AreEqual(0x100*8 - 1, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8 - 1, streamer.AvailableBits);
         }
 
         [TestMethod]
@@ -55,7 +54,7 @@ namespace BitStreamTests
             Assert.AreEqual(1, streamer.UsedBytes);
             Assert.AreEqual(0, streamer.LengthBytes);
             Assert.AreEqual(2, streamer.LengthBits);
-            Assert.AreEqual(0x100*8 - 2, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8 - 2, streamer.AvailableBits);
         }
 
         [TestMethod]
@@ -70,7 +69,7 @@ namespace BitStreamTests
             Assert.AreEqual(1, streamer.UsedBytes);
             Assert.AreEqual(0, streamer.LengthBytes);
             Assert.AreEqual(7, streamer.LengthBits);
-            Assert.AreEqual(0x100*8 - 7, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8 - 7, streamer.AvailableBits);
         }
 
         [TestMethod]
@@ -85,7 +84,7 @@ namespace BitStreamTests
             Assert.AreEqual(1, streamer.UsedBytes);
             Assert.AreEqual(1, streamer.LengthBytes);
             Assert.AreEqual(8, streamer.LengthBits);
-            Assert.AreEqual(0x100*8 - 8, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8 - 8, streamer.AvailableBits);
         }
 
         [TestMethod]
@@ -100,21 +99,21 @@ namespace BitStreamTests
             Assert.AreEqual(2, streamer.UsedBytes);
             Assert.AreEqual(1, streamer.LengthBytes);
             Assert.AreEqual(9, streamer.LengthBits);
-            Assert.AreEqual(0x100*8 - 9, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8 - 9, streamer.AvailableBits);
         }
 
         [TestMethod]
         public void Almost_Full()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8 - 1; ++i)
+            for (int i = 0; i < 0x100 * 8 - 1; ++i)
             {
                 streamer.Write(true);
             }
             Assert.AreEqual(0, streamer.AvailableBytes);
             Assert.AreEqual(0x100, streamer.UsedBytes);
             Assert.AreEqual(0x100 - 1, streamer.LengthBytes);
-            Assert.AreEqual(0x100*8 - 1, streamer.LengthBits);
+            Assert.AreEqual(0x100 * 8 - 1, streamer.LengthBits);
             Assert.AreEqual(1, streamer.AvailableBits);
         }
 
@@ -122,14 +121,14 @@ namespace BitStreamTests
         public void Full()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
                 streamer.Write(true);
             }
             Assert.AreEqual(0, streamer.AvailableBytes);
             Assert.AreEqual(0x100, streamer.UsedBytes);
             Assert.AreEqual(0x100, streamer.LengthBytes);
-            Assert.AreEqual(0x100*8, streamer.LengthBits);
+            Assert.AreEqual(0x100 * 8, streamer.LengthBits);
             Assert.AreEqual(0, streamer.AvailableBits);
         }
 
@@ -137,7 +136,7 @@ namespace BitStreamTests
         public void ReadOneBit_After_Full()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
                 streamer.Write(true);
             }
@@ -145,7 +144,7 @@ namespace BitStreamTests
             Assert.AreEqual(0, streamer.AvailableBytes);
             Assert.AreEqual(0x100, streamer.UsedBytes);
             Assert.AreEqual(0x100 - 1, streamer.LengthBytes);
-            Assert.AreEqual(0x100*8 - 1, streamer.LengthBits);
+            Assert.AreEqual(0x100 * 8 - 1, streamer.LengthBits);
             Assert.AreEqual(1, streamer.AvailableBits);
         }
 
@@ -153,11 +152,11 @@ namespace BitStreamTests
         public void ReadAll_After_Full()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
                 streamer.Write(true);
             }
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
                 streamer.ReadBoolean();
             }
@@ -165,14 +164,14 @@ namespace BitStreamTests
             Assert.AreEqual(0, streamer.UsedBytes);
             Assert.AreEqual(0, streamer.LengthBytes);
             Assert.AreEqual(0, streamer.LengthBits);
-            Assert.AreEqual(0x100*8, streamer.AvailableBits);
+            Assert.AreEqual(0x100 * 8, streamer.AvailableBits);
         }
 
         [TestMethod]
         public void ReadByte_BitByBit()
         {
             byte b = 0xc7; // 11000111
-            var values = new[] {false, true, true, false, false, false, true, true, true};
+            var values = new[] { false, true, true, false, false, false, true, true, true };
             var streamer = new BitRingBuffer(0x100);
             streamer.Write(false);
             streamer.Write(b);
@@ -186,14 +185,14 @@ namespace BitStreamTests
         public void ReadFullBuffer_BitByBit()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
-                streamer.Write((i*(i%7))%2 == 1);
+                streamer.Write((i * (i % 7)) % 2 == 1);
             }
 
-            for (int i = 0; i < 0x100*8; ++i)
+            for (int i = 0; i < 0x100 * 8; ++i)
             {
-                Assert.AreEqual((i*(i%7))%2 == 1, streamer.ReadBoolean());
+                Assert.AreEqual((i * (i % 7)) % 2 == 1, streamer.ReadBoolean());
             }
         }
 
@@ -204,7 +203,7 @@ namespace BitStreamTests
             var buffer = new byte[0x100];
             for (int i = 0; i < 0x100; ++i)
             {
-                buffer[i] = (byte) (((i + 123)*(i + 7))%256);
+                buffer[i] = (byte)(((i + 123) * (i + 7)) % 256);
             }
             streamer.Write(buffer, 0, 0x100);
             var result = new byte[0x100];
@@ -225,16 +224,16 @@ namespace BitStreamTests
                 streamer.Write(true);
             }
             byte result = streamer.ReadByte();
-            Assert.AreEqual((byte) 0x3c, result);
+            Assert.AreEqual((byte)0x3c, result);
             streamer.Write(false); // End of buffer
             streamer.Write(true); // Wrap
             result = streamer.ReadByte();
-            Assert.AreEqual((byte) 0xfe, result);
+            Assert.AreEqual((byte)0xfe, result);
             Assert.AreEqual(true, streamer.ReadBoolean());
         }
 
         [TestMethod]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof(Exception))]
         public void Overread_Bit()
         {
             var streamer = new BitRingBuffer(0x100);
@@ -242,11 +241,11 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (IndexOutOfRangeException))]
+        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void Overwrite_Bit()
         {
             var streamer = new BitRingBuffer(0x100);
-            for (int i = 0; i < 0x100*8 + 1; ++i)
+            for (int i = 0; i < 0x100 * 8 + 1; ++i)
             {
                 streamer.Write(true);
             }

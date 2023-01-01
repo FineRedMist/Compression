@@ -13,9 +13,7 @@
 	limitations under the License.
 */
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace OneOddSock.Compression.Huffman.Tests
@@ -39,7 +37,7 @@ namespace OneOddSock.Compression.Huffman.Tests
 
         public object SyncRoot
         {
-            get { return null; }
+            get { return new object(); }
         }
 
         #endregion

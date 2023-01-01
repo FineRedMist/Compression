@@ -13,9 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
-
 namespace OneOddSock.IO
 {
     /// <summary>
@@ -28,14 +25,6 @@ namespace OneOddSock.IO
         private readonly BitRingBuffer _bitBuffer;
         private readonly byte[] _conversionBuffer;
         private readonly bool _leaveOpen;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStream"/> class.
-        /// </summary>
-        protected BitStream()
-            : this(null, false)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OneOddSock.IO.BitStream"/> class
@@ -122,7 +111,7 @@ namespace OneOddSock.IO
             if (flushAllBits)
             {
                 // Add bits until we can write out all bits during the flush.
-                int bitsToFlush = (8 - (_bitBuffer.LengthBits%8))%8;
+                int bitsToFlush = (8 - (_bitBuffer.LengthBits % 8)) % 8;
                 for (int i = 0; i < bitsToFlush; ++i)
                 {
                     _bitBuffer.Write(false);

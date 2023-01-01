@@ -32,7 +32,7 @@ namespace OneOddSock.Compression.Arithmetic
 
         private void Init()
         {
-            for(uint symbol = 0; symbol <= byte.MaxValue; ++symbol)
+            for (uint symbol = 0; symbol <= byte.MaxValue; ++symbol)
             {
                 _stats.UpdateWeight(symbol, 1);
             }
@@ -51,7 +51,7 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 low += this[j];
             }
-            return new Range {Low = low, High = low + 1};
+            return new Range { Low = low, High = low + 1 };
         }
 
         public void Update(byte symbol)
@@ -64,13 +64,13 @@ namespace OneOddSock.Compression.Arithmetic
 
         public RangeSymbol<byte> Decode(uint value)
         {
-            byte symbol = (byte) _stats.GetSymbol(value);
+            byte symbol = (byte)_stats.GetSymbol(value);
 
             return new RangeSymbol<byte>
-                       {
-                           Range = _stats[symbol],
-                           Symbol = symbol
-                       };
+            {
+                Range = _stats[symbol],
+                Symbol = symbol
+            };
         }
 
         public void Reset()

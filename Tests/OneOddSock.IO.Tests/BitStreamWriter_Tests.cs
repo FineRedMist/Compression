@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -175,8 +173,8 @@ namespace BitStreamTests
         [TestMethod]
         public void WriteArray()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
-            var expected = new byte[] {0x9e, 0x25, 0x8d, 0x2a, 0x11, 0x08, 0x57, 0xc4, 0xcb, 0xb2, 0x80};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
+            var expected = new byte[] { 0x9e, 0x25, 0x8d, 0x2a, 0x11, 0x08, 0x57, 0xc4, 0xcb, 0xb2, 0x80 };
 
             var result = new byte[expected.Length];
 
@@ -302,7 +300,7 @@ namespace BitStreamTests
 
             using (var writer = new BitStreamWriter(stream, false))
             {
-                var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+                var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
                 writer.Write(data, 0, data.Length);
                 writer.Flush();
 
@@ -312,7 +310,7 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ObjectDisposedException))]
+        [ExpectedException(typeof(ObjectDisposedException))]
         public void leaveOpen_False()
         {
             var stream = new MemoryStream();
@@ -348,7 +346,7 @@ namespace BitStreamTests
 
             using (var writer = new BitStreamWriter(stream, false))
             {
-                var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+                var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
                 writer.Write(data, 0, data.Length);
                 writer.Flush();
 
@@ -358,10 +356,10 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void ReadBoolean_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             using (var writer = new BitStreamWriter(stream, false))
             {
@@ -370,10 +368,10 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void ReadByte_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             using (var writer = new BitStreamWriter(stream, false))
             {
@@ -382,10 +380,10 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void ReadArray_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             using (var writer = new BitStreamWriter(stream, false))
             {

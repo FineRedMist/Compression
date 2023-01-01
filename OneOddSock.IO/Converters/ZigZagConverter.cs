@@ -29,37 +29,37 @@ namespace OneOddSock.IO.Converters
         /// <summary>Converts the signed value to an unsigned value invertibly.</summary>
         public static ulong ZigZag(this long value)
         {
-            return (((ulong) (value << 1)) ^ ((ulong) (value >> 63)));
+            return (((ulong)(value << 1)) ^ ((ulong)(value >> 63)));
         }
 
         /// <summary>Converts the signed value to an unsigned value invertibly.</summary>
         public static uint ZigZag(this int value)
         {
-            return (((uint) (value << 1)) ^ ((uint) (value >> 31)));
+            return (((uint)(value << 1)) ^ ((uint)(value >> 31)));
         }
 
         /// <summary>Converts the signed value to an unsigned value invertibly.</summary>
         public static ushort ZigZag(this short value)
         {
-            return (ushort) (((ushort) (value << 1)) ^ ((ushort) (value >> 15)));
+            return (ushort)(((ushort)(value << 1)) ^ ((ushort)(value >> 15)));
         }
 
         /// <summary>Converts the unsigned value to a signed value invertibly.</summary>
         public static long ZigZag(this ulong value)
         {
-            return (((long) (value >> 1)) ^ (((value & 1) != 0 ? -1 : 0)));
+            return (((long)(value >> 1)) ^ (((value & 1) != 0 ? -1 : 0)));
         }
 
         /// <summary>Converts the unsigned value to a signed value invertibly.</summary>
         public static int ZigZag(this uint value)
         {
-            return (((int) (value >> 1)) ^ (((value & 1) != 0 ? -1 : 0)));
+            return (((int)(value >> 1)) ^ (((value & 1) != 0 ? -1 : 0)));
         }
 
         /// <summary>Converts the unsigned value to a signed value invertibly.</summary>
         public static short ZigZag(this ushort value)
         {
-            return (short) (((short) (value >> 1)) ^ ((short) ((value & 1) != 0 ? -1 : 0)));
+            return (short)(((short)(value >> 1)) ^ ((short)((value & 1) != 0 ? -1 : 0)));
         }
     }
 }

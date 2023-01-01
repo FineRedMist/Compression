@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using System.Text;
 
 namespace OneOddSock.IO
@@ -221,7 +219,7 @@ namespace OneOddSock.IO
         /// </returns>
         public override sbyte ReadSByte()
         {
-            return (sbyte) ReadByte();
+            return (sbyte)ReadByte();
         }
 
         /// <summary>

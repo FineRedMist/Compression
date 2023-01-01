@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System.Collections.Generic;
-
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -96,10 +94,10 @@ namespace OneOddSock.Compression.Arithmetic
             uint symbol = _stats.GetSymbol(value);
 
             return new RangeSymbol<uint>
-                       {
-                           Range = _stats[symbol],
-                           Symbol = symbol
-                       };
+            {
+                Range = _stats[symbol],
+                Symbol = symbol
+            };
         }
 
         /// <summary>

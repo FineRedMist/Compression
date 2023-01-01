@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.IO", "OneOddSock.IO\OneOddSock.IO.csproj", "{AC1FEB23-F91F-4D1A-8B3E-39E24901BF19}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.IO", "OneOddSock.IO\OneOddSock.IO.csproj", "{AC1FEB23-F91F-4D1A-8B3E-39E24901BF19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.IO.Tests", "Tests\OneOddSock.IO.Tests\OneOddSock.IO.Tests.csproj", "{C44DF3B4-5640-4708-855B-B2D694F0A402}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,27 +12,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.IO.Tests", "Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51F63BF9-3C1F-458F-9DF4-459B7C96BD35}"
 	ProjectSection(SolutionItems) = preProject
-		Compression.vsmdi = Compression.vsmdi
+		Configuration.json = Configuration.json
+		Jenkinsfile.groovy = Jenkinsfile.groovy
 		LICENSE = LICENSE
-		Local.testsettings = Local.testsettings
-		README = README
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+		nuget.config = nuget.config
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Huffman", "OneOddSock.Compression.Huffman\OneOddSock.Compression.Huffman.csproj", "{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.Compression.Huffman", "OneOddSock.Compression.Huffman\OneOddSock.Compression.Huffman.csproj", "{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Huffman.Tests", "Tests\OneOddSock.Compression.Huffman.Tests\OneOddSock.Compression.Huffman.Tests.csproj", "{F5BE211D-922C-44BB-984A-74549A3492C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Arithmetic", "OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj", "{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.Compression.Arithmetic", "OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj", "{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Arithmetic.Tests", "Tests\OneOddSock.Compression.Arithmetic.Tests\OneOddSock.Compression.Arithmetic.Tests.csproj", "{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Compression.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -69,20 +68,25 @@ Global
 		{F5BE211D-922C-44BB-984A-74549A3492C0} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
 		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF0D92EC-9B69-4969-A7A9-82824468CCE0}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Compression.vsmdi
+	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = BitStream\BitStream.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
-		$0.TextStylePolicy = $2
+		$0.TextStylePolicy = $4
 		$2.inheritsSet = null
 		$2.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $3
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
-		$0.TextStylePolicy = $4
 		$4.FileWidth = 120
 		$4.TabsToSpaces = False
 		$4.inheritsSet = VisualStudio
@@ -93,21 +97,19 @@ Global
 		$5.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $6
 		$6.Rules = $7
-		$7.NamingRule = $8
+		$7.NamingRule = $32
 		$8.Name = Namespaces
 		$8.AffectedEntity = Namespace
 		$8.VisibilityMask = VisibilityMask
 		$8.NamingStyle = PascalCase
 		$8.IncludeInstanceMembers = True
 		$8.IncludeStaticEntities = True
-		$7.NamingRule = $9
 		$9.Name = Types
 		$9.AffectedEntity = Class, Struct, Enum, Delegate
 		$9.VisibilityMask = VisibilityMask
 		$9.NamingStyle = PascalCase
 		$9.IncludeInstanceMembers = True
 		$9.IncludeStaticEntities = True
-		$7.NamingRule = $10
 		$10.Name = Interfaces
 		$10.RequiredPrefixes = $11
 		$11.String = I
@@ -116,7 +118,6 @@ Global
 		$10.NamingStyle = PascalCase
 		$10.IncludeInstanceMembers = True
 		$10.IncludeStaticEntities = True
-		$7.NamingRule = $12
 		$12.Name = Attributes
 		$12.RequiredSuffixes = $13
 		$13.String = Attribute
@@ -125,7 +126,6 @@ Global
 		$12.NamingStyle = PascalCase
 		$12.IncludeInstanceMembers = True
 		$12.IncludeStaticEntities = True
-		$7.NamingRule = $14
 		$14.Name = Event Arguments
 		$14.RequiredSuffixes = $15
 		$15.String = EventArgs
@@ -134,7 +134,6 @@ Global
 		$14.NamingStyle = PascalCase
 		$14.IncludeInstanceMembers = True
 		$14.IncludeStaticEntities = True
-		$7.NamingRule = $16
 		$16.Name = Exceptions
 		$16.RequiredSuffixes = $17
 		$17.String = Exception
@@ -143,97 +142,82 @@ Global
 		$16.NamingStyle = PascalCase
 		$16.IncludeInstanceMembers = True
 		$16.IncludeStaticEntities = True
-		$7.NamingRule = $18
 		$18.Name = Methods
 		$18.AffectedEntity = Methods
 		$18.VisibilityMask = VisibilityMask
 		$18.NamingStyle = PascalCase
 		$18.IncludeInstanceMembers = True
 		$18.IncludeStaticEntities = True
-		$7.NamingRule = $19
 		$19.Name = Static Readonly Fields
 		$19.AffectedEntity = ReadonlyField
 		$19.VisibilityMask = Internal, Protected, Public
 		$19.NamingStyle = PascalCase
 		$19.IncludeInstanceMembers = False
 		$19.IncludeStaticEntities = True
-		$7.NamingRule = $20
 		$20.Name = Fields (Non Private)
 		$20.AffectedEntity = Field
 		$20.VisibilityMask = Internal, Protected, Public
 		$20.NamingStyle = PascalCase
 		$20.IncludeInstanceMembers = True
 		$20.IncludeStaticEntities = True
-		$7.NamingRule = $21
 		$21.Name = ReadOnly Fields (Non Private)
 		$21.AffectedEntity = ReadonlyField
 		$21.VisibilityMask = Internal, Protected, Public
 		$21.NamingStyle = PascalCase
 		$21.IncludeInstanceMembers = True
 		$21.IncludeStaticEntities = False
-		$7.NamingRule = $22
 		$22.Name = Fields (Private)
 		$22.AllowedPrefixes = $23
-		$23.String = _
 		$23.String = m_
 		$22.AffectedEntity = Field, ReadonlyField
 		$22.VisibilityMask = Private
 		$22.NamingStyle = CamelCase
 		$22.IncludeInstanceMembers = True
 		$22.IncludeStaticEntities = False
-		$7.NamingRule = $24
 		$24.Name = Static Fields (Private)
 		$24.AffectedEntity = Field
 		$24.VisibilityMask = Private
 		$24.NamingStyle = CamelCase
 		$24.IncludeInstanceMembers = False
 		$24.IncludeStaticEntities = True
-		$7.NamingRule = $25
 		$25.Name = ReadOnly Fields (Private)
 		$25.AllowedPrefixes = $26
-		$26.String = _
 		$26.String = m_
 		$25.AffectedEntity = ReadonlyField
 		$25.VisibilityMask = Private
 		$25.NamingStyle = CamelCase
 		$25.IncludeInstanceMembers = True
 		$25.IncludeStaticEntities = False
-		$7.NamingRule = $27
 		$27.Name = Constant Fields
 		$27.AffectedEntity = ConstantField
 		$27.VisibilityMask = VisibilityMask
 		$27.NamingStyle = PascalCase
 		$27.IncludeInstanceMembers = True
 		$27.IncludeStaticEntities = True
-		$7.NamingRule = $28
 		$28.Name = Properties
 		$28.AffectedEntity = Property
 		$28.VisibilityMask = VisibilityMask
 		$28.NamingStyle = PascalCase
 		$28.IncludeInstanceMembers = True
 		$28.IncludeStaticEntities = True
-		$7.NamingRule = $29
 		$29.Name = Events
 		$29.AffectedEntity = Event
 		$29.VisibilityMask = VisibilityMask
 		$29.NamingStyle = PascalCase
 		$29.IncludeInstanceMembers = True
 		$29.IncludeStaticEntities = True
-		$7.NamingRule = $30
 		$30.Name = Enum Members
 		$30.AffectedEntity = EnumMember
 		$30.VisibilityMask = VisibilityMask
 		$30.NamingStyle = PascalCase
 		$30.IncludeInstanceMembers = True
 		$30.IncludeStaticEntities = True
-		$7.NamingRule = $31
 		$31.Name = Parameters
 		$31.AffectedEntity = Parameter
 		$31.VisibilityMask = VisibilityMask
 		$31.NamingStyle = CamelCase
 		$31.IncludeInstanceMembers = True
 		$31.IncludeStaticEntities = True
-		$7.NamingRule = $32
 		$32.Name = Type Parameters
 		$32.RequiredPrefixes = $33
 		$33.String = T

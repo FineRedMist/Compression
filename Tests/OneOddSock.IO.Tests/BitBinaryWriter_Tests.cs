@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -64,7 +63,7 @@ namespace BitStreamTests
         [TestMethod]
         public void BaseStream_NotBitStream()
         {
-            var data = new byte[] {0x23, 0x72, 0x64, 0xe3, 0x11, 0xd1, 0x4a, 0x9c, 0xb6, 0x02};
+            var data = new byte[] { 0x23, 0x72, 0x64, 0xe3, 0x11, 0xd1, 0x4a, 0x9c, 0xb6, 0x02 };
             var stream = new MemoryStream(data);
             var writer = new BitBinaryWriter(stream);
             Assert.AreNotSame(stream, writer.BaseStream);
@@ -73,7 +72,7 @@ namespace BitStreamTests
         [TestMethod]
         public void BaseStream_IsBitStream()
         {
-            var data = new byte[] {0x23, 0x72, 0x64, 0xe3, 0x11, 0xd1, 0x4a, 0x9c, 0xb6, 0x02};
+            var data = new byte[] { 0x23, 0x72, 0x64, 0xe3, 0x11, 0xd1, 0x4a, 0x9c, 0xb6, 0x02 };
             var stream = new MemoryStream(data);
             BitStream bitStream = new BitStreamWriter(stream);
             var writer = new BitBinaryWriter(bitStream);

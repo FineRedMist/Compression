@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-
 namespace OneOddSock.Compression.Arithmetic
 {
     /// <summary>
@@ -30,9 +28,9 @@ namespace OneOddSock.Compression.Arithmetic
         private const uint FirstQuarter = 0x20000000;
         private const uint ThirdQuarter = 0x60000000;
         private const uint Half = 0x40000000;
-        private const uint RangeLimit = ((uint) 1) << 29;
+        private const uint RangeLimit = ((uint)1) << 29;
 
-        private static readonly Range BoundaryAdjust = new Range {Low = 0, High = 1};
+        private static readonly Range BoundaryAdjust = new Range { Low = 0, High = 1 };
         private uint _buffer;
         private Range _range;
         private uint _scale;
@@ -65,7 +63,7 @@ namespace OneOddSock.Compression.Arithmetic
         public void Encode(Range counts,
                            uint total,
                            WriteBitDelegate bitWriter)
-            // total < 2^29
+        // total < 2^29
         {
             if (total >= RangeLimit)
             {
@@ -84,10 +82,10 @@ namespace OneOddSock.Compression.Arithmetic
                 throw new ArgumentNullException("bitWriter");
             }
             // partition number space into single steps
-            _step = (_range.Length())/total; // interval open at the top => +1
+            _step = (_range.Length()) / total; // interval open at the top => +1
 
             // Update bounds -- interval open at the top => -1 for High.
-            _range = (counts*_step + _range.Low) - BoundaryAdjust;
+            _range = (counts * _step + _range.Low) - BoundaryAdjust;
 
             // apply e1/e2 mapping
             while ((_range.High < Half) || (_range.Low >= Half))
@@ -98,7 +96,7 @@ namespace OneOddSock.Compression.Arithmetic
                 bitWriter(!isHighLessThanHalf);
                 EmitE3Mappings(bitWriter, isHighLessThanHalf);
 
-                _range = (_range - sub)*2 + BoundaryAdjust;
+                _range = (_range - sub) * 2 + BoundaryAdjust;
             }
 
             // e3
@@ -106,7 +104,7 @@ namespace OneOddSock.Compression.Arithmetic
             {
                 // keep necessary e3 mappings in mind
                 _scale++;
-                _range = (_range - FirstQuarter)*2 + BoundaryAdjust;
+                _range = (_range - FirstQuarter) * 2 + BoundaryAdjust;
             }
         }
 
@@ -148,7 +146,7 @@ namespace OneOddSock.Compression.Arithmetic
             // Fill buffer with bits from the input stream
             for (int i = 0; i < 31; i++) // just use the 31 least significant bits
             {
-                _buffer = (_buffer << 1) | ((uint) (bitReader() ? 1 : 0));
+                _buffer = (_buffer << 1) | ((uint)(bitReader() ? 1 : 0));
             }
         }
 
@@ -158,17 +156,17 @@ namespace OneOddSock.Compression.Arithmetic
         /// <param name="total"></param>
         /// <returns></returns>
         public uint DecodeTarget(uint total)
-            // total < 2^29
+        // total < 2^29
         {
             if (total >= RangeLimit)
             {
                 throw new ArgumentOutOfRangeException("total");
             }
             // split number space into single steps
-            _step = (_range.Length())/total; // interval open at the top => +1
+            _step = (_range.Length()) / total; // interval open at the top => +1
 
             // return current value
-            return (_buffer - _range.Low)/_step;
+            return (_buffer - _range.Low) / _step;
         }
 
         /// <summary>
@@ -190,7 +188,7 @@ namespace OneOddSock.Compression.Arithmetic
                 throw new ArgumentNullException("bitReader");
             }
             // Update bounds -- interval open at the top => -1 for High
-            _range = (counts*_step + _range.Low) - BoundaryAdjust;
+            _range = (counts * _step + _range.Low) - BoundaryAdjust;
 
             // e1/e2 mapping
             while ((_range.High < Half) || (_range.Low >= Half))
@@ -198,8 +196,8 @@ namespace OneOddSock.Compression.Arithmetic
                 bool isHighLessThanHalf = _range.High < Half; // true => emit false for lower half.
                 uint sub = isHighLessThanHalf ? 0 : Half;
 
-                _range = (_range - sub)*2 + BoundaryAdjust;
-                _buffer = (_buffer - sub)*2 + ((uint) (bitReader() ? 1 : 0));
+                _range = (_range - sub) * 2 + BoundaryAdjust;
+                _buffer = (_buffer - sub) * 2 + ((uint)(bitReader() ? 1 : 0));
 
                 _scale = 0;
             }
@@ -208,8 +206,8 @@ namespace OneOddSock.Compression.Arithmetic
             while (_range.In(FirstQuarter, ThirdQuarter))
             {
                 _scale++;
-                _range = (_range - FirstQuarter)*2 + BoundaryAdjust;
-                _buffer = 2*(_buffer - FirstQuarter) + ((uint) (bitReader() ? 1 : 0));
+                _range = (_range - FirstQuarter) * 2 + BoundaryAdjust;
+                _buffer = 2 * (_buffer - FirstQuarter) + ((uint)(bitReader() ? 1 : 0));
             }
         }
 

@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using OneOddSock.IO;
 
 namespace OneOddSock.Compression.Arithmetic
@@ -184,7 +182,7 @@ namespace OneOddSock.Compression.Arithmetic
                         _eof = true;
                         return i;
                     default:
-                        buffer[offset + i] = (byte) adaptiveSymbol;
+                        buffer[offset + i] = (byte)adaptiveSymbol;
                         break;
                 }
             }

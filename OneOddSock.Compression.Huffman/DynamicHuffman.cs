@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace OneOddSock.Compression.Huffman
@@ -39,7 +37,7 @@ namespace OneOddSock.Compression.Huffman
         /// the weight of the NotYetTransmitted symbol.
         /// </summary>
         /// <param name="tweaker">Delegate for adjusting the weight of the NotYetTransmitted symbol.</param>
-        public DynamicHuffman(NotYetTransmittedWeightTweakDelegate<TSymbolType> tweaker)
+        public DynamicHuffman(NotYetTransmittedWeightTweakDelegate<TSymbolType>? tweaker = null)
         {
             _entries = new Entry[1];
             _entries[0].Height = 1;
@@ -50,18 +48,9 @@ namespace OneOddSock.Compression.Huffman
         }
 
         /// <summary>
-        /// Creates a new instance of the dynamic Huffman class with the default delegate for adjusting
-        /// the weight of the NotYetTransmitted symbol.
-        /// </summary>
-        public DynamicHuffman()
-            : this(null)
-        {
-        }
-
-        /// <summary>
         /// Delegate to write tree transformation updates to.
         /// </summary>
-        public WriteDotStringDelegate DotWriter { get; set; }
+        public WriteDotStringDelegate? DotWriter { get; set; }
 
         /// <summary>
         /// The height of the tree.
@@ -88,7 +77,7 @@ namespace OneOddSock.Compression.Huffman
         /// </summary>
         private uint MinWeightEntry
         {
-            get { return (uint) (_entries.Length - 1); }
+            get { return (uint)(_entries.Length - 1); }
         }
 
         /// <summary>
@@ -184,7 +173,7 @@ namespace OneOddSock.Compression.Huffman
         public void WriteTable(WriteSymbolDelegate<TSymbolType> symbolWriter, WriteUInt32Delegate valueWriter,
                                WriteNotYetTransmittedDelegate notYetTransmittedWriter)
         {
-            valueWriter((uint) _map.Count);
+            valueWriter((uint)_map.Count);
 
             for (uint i = 0; i < _entries.Length; ++i)
             {
@@ -576,14 +565,14 @@ namespace OneOddSock.Compression.Huffman
                 uint lowestIndexOfSameWeight = GetLowestIndexOfSameWeight(index, out nextBlockWeight);
                 SwapEntries(index, lowestIndexOfSameWeight);
                 index = lowestIndexOfSameWeight;
-                var weightToAdd = (uint) Math.Min(weightModifier, nextBlockWeight - _entries[index].Weight);
+                var weightToAdd = (uint)Math.Min(weightModifier, nextBlockWeight - _entries[index].Weight);
                 _entries[index].Weight += weightToAdd;
-                remainingWeightModifier -= (int) weightToAdd;
-                ToDot(DotOp.ChangeWeight, index, 0, (int) weightToAdd, default(TSymbolType));
+                remainingWeightModifier -= (int)weightToAdd;
+                ToDot(DotOp.ChangeWeight, index, 0, (int)weightToAdd, default(TSymbolType));
                 if (index != Root)
                 {
                     uint parentIndex = _entries[index].ParentIndex;
-                    IncreaseIndex(parentIndex, (int) weightToAdd);
+                    IncreaseIndex(parentIndex, (int)weightToAdd);
                 }
             }
         }
@@ -605,14 +594,14 @@ namespace OneOddSock.Compression.Huffman
                 uint highestIndexOfSameWeight = GetHighestIndexOfSameWeight(index, out nextBlockWeight);
                 SwapEntries(index, highestIndexOfSameWeight);
                 index = highestIndexOfSameWeight;
-                var weightToRemove = (uint) Math.Min(weightModifier, _entries[index].Weight - nextBlockWeight);
+                var weightToRemove = (uint)Math.Min(weightModifier, _entries[index].Weight - nextBlockWeight);
                 _entries[index].Weight -= weightToRemove;
-                remainingWeightModifier -= (int) weightToRemove;
-                ToDot(DotOp.ChangeWeight, index, 0, -((int) weightToRemove), default(TSymbolType));
+                remainingWeightModifier -= (int)weightToRemove;
+                ToDot(DotOp.ChangeWeight, index, 0, -((int)weightToRemove), default(TSymbolType));
                 if (index != Root)
                 {
                     uint parentIndex = _entries[index].ParentIndex;
-                    DecreaseIndex(parentIndex, (int) weightToRemove);
+                    DecreaseIndex(parentIndex, (int)weightToRemove);
                 }
             }
         }
@@ -686,7 +675,7 @@ namespace OneOddSock.Compression.Huffman
                 GetLevelInternal(SymbolSpace.NotYetTransmitted),
                 Weight,
                 GetWeightInternal(SymbolSpace.NotYetTransmitted),
-                (uint) _map.Count,
+                (uint)_map.Count,
                 symbol,
                 occurred);
         }
@@ -781,13 +770,13 @@ namespace OneOddSock.Compression.Huffman
 
         private struct SymbolSpace : IEquatable<SymbolSpace>, IEquatable<TSymbolType>, IComparable<SymbolSpace>
         {
-// ReSharper disable StaticFieldInGenericType
+            // ReSharper disable StaticFieldInGenericType
             public static readonly SymbolSpace NotYetTransmitted = new SymbolSpace
-// ReSharper restore StaticFieldInGenericType
-                                                                       {
-                                                                           _symbol = default(TSymbolType),
-                                                                           _isSymbolValid = false
-                                                                       };
+            // ReSharper restore StaticFieldInGenericType
+            {
+                _symbol = default(TSymbolType),
+                _isSymbolValid = false
+            };
 
             private bool _isSymbolValid;
             private TSymbolType _symbol;
@@ -816,7 +805,7 @@ namespace OneOddSock.Compression.Huffman
                 _isSymbolValid = false;
             }
 
-            public override string ToString()
+            public override string? ToString()
             {
                 return _isSymbolValid ? _symbol.ToString() : "<NYT>";
             }

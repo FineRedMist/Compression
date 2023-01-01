@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -26,7 +24,7 @@ namespace BitStreamTests
         [TestMethod]
         public void OneBitRead()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -49,7 +47,7 @@ namespace BitStreamTests
         [TestMethod]
         public void SevenBitsRead()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -78,7 +76,7 @@ namespace BitStreamTests
         [TestMethod]
         public void EightBitsRead()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -108,7 +106,7 @@ namespace BitStreamTests
         [TestMethod]
         public void EightBitsAndOneByteRead()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -140,7 +138,7 @@ namespace BitStreamTests
         [TestMethod]
         public void CompletelyRead()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -184,7 +182,7 @@ namespace BitStreamTests
         [TestMethod]
         public void Seek()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -221,7 +219,7 @@ namespace BitStreamTests
         [TestMethod]
         public void SetPosition()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             Assert.AreEqual(true, reader.CanRead);
@@ -258,7 +256,7 @@ namespace BitStreamTests
         [TestMethod]
         public void LeaveOpen_True()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             using (var reader = new BitStreamReader(stream, true))
             {
@@ -328,10 +326,10 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ObjectDisposedException))]
+        [ExpectedException(typeof(ObjectDisposedException))]
         public void LeaveOpen_False_ObjectDisposed()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             using (var reader = new BitStreamReader(stream, false))
             {
@@ -401,50 +399,50 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void WriteBoolean_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             reader.Write(true);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void WriteByte_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             reader.WriteByte(0x31);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void WriteBuffer_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
-            reader.Write(new byte[] {0x35, 0x12}, 0, 2);
+            reader.Write(new byte[] { 0x35, 0x12 }, 0, 2);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void SetLength_NotSupported()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
             reader.SetLength(12);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (EndOfStreamException))]
+        [ExpectedException(typeof(EndOfStreamException))]
         public void ReadBoolean_EndOfStream()
         {
-            var data = new byte[] {0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65};
+            var data = new byte[] { 0x3c, 0x4b, 0x1a, 0x54, 0x22, 0x10, 0xaf, 0x89, 0x97, 0x65 };
             var stream = new MemoryStream(data);
             var reader = new BitStreamReader(stream);
 
