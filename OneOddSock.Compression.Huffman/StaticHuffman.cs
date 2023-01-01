@@ -13,9 +13,7 @@
 	limitations under the License.
 */
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace OneOddSock.Compression.Huffman
 {
@@ -37,8 +35,8 @@ namespace OneOddSock.Compression.Huffman
             _map = new Dictionary<TSymbolType, SymbolInfo>(symbolWeights.Count);
 
             List<Entry> symbols = GetSymbolList(symbolWeights);
-            _symbolCount = (uint) symbols.Count;
-            _entries = new Entry[2*_symbolCount - 1];
+            _symbolCount = (uint)symbols.Count;
+            _entries = new Entry[2 * _symbolCount - 1];
 
             for (int i = 0; i < symbols.Count; ++i)
             {
@@ -60,8 +58,8 @@ namespace OneOddSock.Compression.Huffman
         public StaticHuffman(ReadSymbolDelegate<TSymbolType> symbolReader, ReadUInt32Delegate valueReader)
         {
             _symbolCount = valueReader();
-            _entries = new Entry[2*_symbolCount - 1];
-            _map = new Dictionary<TSymbolType, SymbolInfo>((int) _symbolCount);
+            _entries = new Entry[2 * _symbolCount - 1];
+            _map = new Dictionary<TSymbolType, SymbolInfo>((int)_symbolCount);
 
             for (uint i = 0; i < _symbolCount; ++i)
             {
@@ -75,9 +73,9 @@ namespace OneOddSock.Compression.Huffman
 
             for (uint i = _symbolCount; i < _entries.Length; ++i)
             {
-                _entries[i].ChildIndex = new uint[2];
-                _entries[i].ChildIndex[0] = valueReader();
-                _entries[i].ChildIndex[1] = valueReader();
+                uint v1 = valueReader();
+                uint v2 = valueReader();
+                _entries[i].ChildIndex = new uint[2] { v1, v2 };
             }
 
             ComputeParents();
@@ -108,7 +106,7 @@ namespace OneOddSock.Compression.Huffman
         /// </summary>
         public TSymbolType GetSymbol(ReadBitDelegate bitReader)
         {
-            uint current = (uint) _entries.Length - 1;
+            uint current = (uint)_entries.Length - 1;
             while (!_entries[current].IsSymbol)
             {
                 current = _entries[current].GetChild(bitReader());
@@ -142,8 +140,9 @@ namespace OneOddSock.Compression.Huffman
 
             for (uint i = _symbolCount; i < _entries.Length; ++i)
             {
-                valueWriter(_entries[i].ChildIndex[0]);
-                valueWriter(_entries[i].ChildIndex[1]);
+                uint[] entry = _entries[i].ChildIndex!;
+                valueWriter(entry[0]);
+                valueWriter(entry[1]);
             }
         }
 
@@ -154,10 +153,10 @@ namespace OneOddSock.Compression.Huffman
             {
                 return info.Bits;
             }
-            var result = new BitArray((int) Height);
+            var result = new BitArray((int)Height);
             uint currentIndex = 0;
             UpdateCachedBits(info.Index, result, ref currentIndex);
-            result.Length = (int) currentIndex;
+            result.Length = (int)currentIndex;
             info.Bits = result;
             _map[symbol] = info;
             return result;
@@ -171,7 +170,7 @@ namespace OneOddSock.Compression.Huffman
             {
                 UpdateCachedBits(parent, bits, ref currentIndex);
             }
-            bits[(int) currentIndex] = output;
+            bits[(int)currentIndex] = output;
             ++currentIndex;
         }
 
@@ -180,7 +179,7 @@ namespace OneOddSock.Compression.Huffman
             var levels = new uint[_entries.Length];
             uint highestLevel = 0;
             var toProcess = new Stack<uint>();
-            toProcess.Push((uint) (_entries.Length - 1));
+            toProcess.Push((uint)(_entries.Length - 1));
             while (toProcess.Count > 0)
             {
                 uint current = toProcess.Pop();
@@ -188,7 +187,7 @@ namespace OneOddSock.Compression.Huffman
                 highestLevel = Math.Max(highestLevel, currentLevel + 1);
                 if (!_entries[current].IsSymbol)
                 {
-                    uint[] children = _entries[current].ChildIndex;
+                    uint[] children = _entries[current].ChildIndex!;
                     levels[children[0]] = currentLevel + 1;
                     levels[children[1]] = currentLevel + 1;
                     toProcess.Push(children[0]);
@@ -251,13 +250,13 @@ namespace OneOddSock.Compression.Huffman
         private void ComputeParents()
         {
             var toProcess = new Stack<uint>();
-            toProcess.Push((uint) (_entries.Length - 1));
+            toProcess.Push((uint)(_entries.Length - 1));
             while (toProcess.Count > 0)
             {
                 uint current = toProcess.Pop();
                 if (!_entries[current].IsSymbol)
                 {
-                    uint[] children = _entries[current].ChildIndex;
+                    uint[] children = _entries[current].ChildIndex!;
                     _entries[children[0]].Parent = current;
                     _entries[children[1]].Parent = current;
                     toProcess.Push(children[0]);
@@ -300,7 +299,7 @@ namespace OneOddSock.Compression.Huffman
                 SymbolInfo info;
                 info.Index = index;
                 info.Bits = null;
-                _map[sourceEntries[(int) index].Symbol] = info;
+                _map[sourceEntries[(int)index].Symbol] = info;
             }
         }
 
@@ -312,7 +311,7 @@ namespace OneOddSock.Compression.Huffman
 
         private struct Entry : IComparer<Entry>
         {
-            public uint[] ChildIndex;
+            public uint[]? ChildIndex;
             public uint Parent;
             public TSymbolType Symbol;
             public uint Weight;
@@ -324,12 +323,12 @@ namespace OneOddSock.Compression.Huffman
 
             public bool GetChildIndex(uint index)
             {
-                return ChildIndex[1] == index;
+                return ChildIndex![1] == index;
             }
 
             public uint GetChild(bool position)
             {
-                return ChildIndex[position ? 1 : 0];
+                return ChildIndex![position ? 1 : 0];
             }
 
             #region IComparer implementation
@@ -353,7 +352,7 @@ namespace OneOddSock.Compression.Huffman
 
         private struct SymbolInfo
         {
-            public BitArray Bits;
+            public BitArray? Bits;
             public uint Index;
         }
 
