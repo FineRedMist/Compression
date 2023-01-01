@@ -29,7 +29,7 @@ namespace OneOddSock.IO
         public BitStreamReader(Stream stream)
             : base(stream, false)
         {
-            if (stream != null && !stream.CanRead)
+            if (!stream.CanRead)
             {
                 throw new ArgumentException("The stream must support reading!", "stream");
             }
@@ -43,7 +43,7 @@ namespace OneOddSock.IO
         public BitStreamReader(Stream stream, bool leaveOpen)
             : base(stream, leaveOpen)
         {
-            if (stream != null && !stream.CanRead)
+            if (!stream.CanRead)
             {
                 throw new ArgumentException("The stream must support reading!", "stream");
             }

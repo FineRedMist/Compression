@@ -29,7 +29,7 @@ namespace OneOddSock.IO
         public BitStreamWriter(Stream stream)
             : base(stream, false)
         {
-            if (stream != null && !stream.CanWrite)
+            if (!stream.CanWrite)
             {
                 throw new ArgumentException("The stream must support writing!", "stream");
             }
@@ -43,7 +43,7 @@ namespace OneOddSock.IO
         public BitStreamWriter(Stream stream, bool leaveOpen)
             : base(stream, leaveOpen)
         {
-            if (stream != null && !stream.CanWrite)
+            if (!stream.CanWrite)
             {
                 throw new ArgumentException("The stream must support writing!", "stream");
             }
