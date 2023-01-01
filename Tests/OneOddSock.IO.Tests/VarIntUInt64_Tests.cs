@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -34,7 +33,7 @@ namespace BitStreamTests
                 writer.WriteVar(value);
                 writer.Flush();
                 long newPos = stream.Position;
-                Assert.AreEqual(size, (ulong) (newPos - pos), "Size mismatch for {0}", value);
+                Assert.AreEqual(size, (ulong)(newPos - pos), "Size mismatch for {0}", value);
             }
 
             stream.Position = 0;

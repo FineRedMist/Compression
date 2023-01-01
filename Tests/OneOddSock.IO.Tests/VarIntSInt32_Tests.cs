@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOddSock.IO;
 
@@ -170,7 +168,7 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (OverflowException))]
+        [ExpectedException(typeof(OverflowException))]
         public void SInt32_Overflow_Failure_LowerBound()
         {
             var stream = new MemoryStream();
@@ -186,7 +184,7 @@ namespace BitStreamTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof (OverflowException))]
+        [ExpectedException(typeof(OverflowException))]
         public void SInt32_Overflow_Failure_UpperBound()
         {
             var stream = new MemoryStream();
