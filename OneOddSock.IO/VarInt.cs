@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-using System.IO;
 using OneOddSock.IO.Converters;
 
 namespace OneOddSock.IO
@@ -36,8 +34,8 @@ namespace OneOddSock.IO
             do
             {
                 byte b = (iteration < 9)
-                             ? (byte) ((byte) (temp & 0x7f) | (byte) ((temp > 0x7f) ? 0x80 : 0))
-                             : (byte) (temp & 0xff);
+                             ? (byte)((byte)(temp & 0x7f) | (byte)((temp > 0x7f) ? 0x80 : 0))
+                             : (byte)(temp & 0xff);
                 writer.Write(b);
                 temp = temp >> ((iteration < 9) ? 7 : 8);
                 ++iteration;
@@ -50,7 +48,7 @@ namespace OneOddSock.IO
         /// </summary>
         public static void WriteVar(this BinaryWriter writer, uint value)
         {
-            writer.WriteVar((ulong) value);
+            writer.WriteVar((ulong)value);
         }
 
         /// <summary>
@@ -59,7 +57,7 @@ namespace OneOddSock.IO
         /// </summary>
         public static void WriteVar(this BinaryWriter writer, ushort value)
         {
-            writer.WriteVar((ulong) value);
+            writer.WriteVar((ulong)value);
         }
 
         /// <summary>
@@ -102,8 +100,8 @@ namespace OneOddSock.IO
             {
                 byte b = reader.ReadByte();
                 pendingData = (iteration < 8) && (b & 0x80) != 0;
-                var v = (ulong) (iteration < 8 ? (b & 0x7f) : b);
-                result = result + (v << (7*iteration));
+                var v = (ulong)(iteration < 8 ? (b & 0x7f) : b);
+                result = result + (v << (7 * iteration));
                 ++iteration;
             } while (pendingData);
             return result;
@@ -118,7 +116,7 @@ namespace OneOddSock.IO
             ulong result = reader.ReadVarUInt64();
             if (result <= uint.MaxValue)
             {
-                return (uint) result;
+                return (uint)result;
             }
             throw new OverflowException();
         }
@@ -132,7 +130,7 @@ namespace OneOddSock.IO
             ulong result = reader.ReadVarUInt64();
             if (result <= ushort.MaxValue)
             {
-                return (ushort) result;
+                return (ushort)result;
             }
             throw new OverflowException();
         }
@@ -155,7 +153,7 @@ namespace OneOddSock.IO
             long result = reader.ReadVarUInt64().ZigZag();
             if (result >= int.MinValue && result <= int.MaxValue)
             {
-                return (int) result;
+                return (int)result;
             }
             throw new OverflowException();
         }
@@ -169,7 +167,7 @@ namespace OneOddSock.IO
             long result = reader.ReadVarUInt64().ZigZag();
             if (result >= short.MinValue && result <= short.MaxValue)
             {
-                return (short) result;
+                return (short)result;
             }
             throw new OverflowException();
         }

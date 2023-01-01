@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System;
-
 namespace OneOddSock.IO
 {
     /// <summary>
@@ -50,16 +48,16 @@ namespace OneOddSock.IO
 
         private bool this[int i]
         {
-            get { return (_buffer[i >> 3] & (1 << (7 - (i%8)))) != 0; }
+            get { return (_buffer[i >> 3] & (1 << (7 - (i % 8)))) != 0; }
             set
             {
                 if (value)
                 {
-                    _buffer[i >> 3] |= (byte) (1 << (7 - (i%8)));
+                    _buffer[i >> 3] |= (byte)(1 << (7 - (i % 8)));
                 }
                 else
                 {
-                    _buffer[i >> 3] &= (byte) ~(1 << (7 - (i%8)));
+                    _buffer[i >> 3] &= (byte)~(1 << (7 - (i % 8)));
                 }
             }
         }
@@ -72,9 +70,9 @@ namespace OneOddSock.IO
             get
             {
                 return _full
-                           ? _buffer.Length*8
+                           ? _buffer.Length * 8
                            : (_bitWritePosition < _bitReadPosition
-                                  ? _bitWritePosition + (_buffer.Length*8) - _bitReadPosition
+                                  ? _bitWritePosition + (_buffer.Length * 8) - _bitReadPosition
                                   : _bitWritePosition - _bitReadPosition);
             }
         }
@@ -92,7 +90,7 @@ namespace OneOddSock.IO
         /// </summary>
         public int AvailableBits
         {
-            get { return _buffer.Length*8 - LengthBits; }
+            get { return _buffer.Length * 8 - LengthBits; }
         }
 
         /// <summary>
@@ -138,7 +136,7 @@ namespace OneOddSock.IO
                 throw new IndexOutOfRangeException("Buffer is full!");
             }
             this[_bitWritePosition] = value;
-            _bitWritePosition = (_bitWritePosition + 1)%(_buffer.Length*8);
+            _bitWritePosition = (_bitWritePosition + 1) % (_buffer.Length * 8);
             _full = _bitWritePosition == _bitReadPosition;
         }
 
@@ -176,7 +174,7 @@ namespace OneOddSock.IO
             }
             _full = false;
             bool result = this[_bitReadPosition];
-            _bitReadPosition = (_bitReadPosition + 1)%(_buffer.Length*8);
+            _bitReadPosition = (_bitReadPosition + 1) % (_buffer.Length * 8);
             return result;
         }
 
@@ -188,7 +186,7 @@ namespace OneOddSock.IO
             byte result = 0;
             for (int i = 7; i >= 0; --i)
             {
-                result |= (byte) (ReadBoolean() ? (1 << i) : 0);
+                result |= (byte)(ReadBoolean() ? (1 << i) : 0);
             }
             return result;
         }

@@ -13,7 +13,6 @@
 	limitations under the License.
 */
 
-using System;
 using OneOddSock.IO.Converters;
 
 namespace OneOddSock.IO

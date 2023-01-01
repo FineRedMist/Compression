@@ -13,8 +13,6 @@
 	limitations under the License.
 */
 
-using System.IO;
-
 namespace OneOddSock.IO
 {
     /// <summary>
@@ -64,7 +62,7 @@ namespace OneOddSock.IO
             BinaryWriter result = writer;
             if (endian != Endian.Native)
             {
-                var endianWriter = new EndianWriter(writer) {Endian = endian};
+                var endianWriter = new EndianWriter(writer) { Endian = endian };
                 result = endianWriter;
             }
             writer.Write(marker);
