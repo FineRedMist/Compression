@@ -35,7 +35,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public static Range operator +(Range range, uint value)
         {
-            return new Range {Low = range.Low + value, High = range.High + value};
+            return new Range { Low = range.Low + value, High = range.High + value };
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public static Range operator -(Range range, uint value)
         {
-            return new Range {Low = range.Low - value, High = range.High - value};
+            return new Range { Low = range.Low - value, High = range.High - value };
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public static Range operator *(Range range, uint value)
         {
-            return new Range {Low = value*range.Low, High = value*range.High};
+            return new Range { Low = value * range.Low, High = value * range.High };
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public static Range operator +(Range lhs, Range rhs)
         {
-            return new Range {Low = lhs.Low + rhs.Low, High = lhs.High + rhs.High};
+            return new Range { Low = lhs.Low + rhs.Low, High = lhs.High + rhs.High };
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace OneOddSock.Compression.Arithmetic
         /// </summary>
         public static Range operator -(Range lhs, Range rhs)
         {
-            return new Range {Low = lhs.Low - rhs.Low, High = lhs.High - rhs.High};
+            return new Range { Low = lhs.Low - rhs.Low, High = lhs.High - rhs.High };
         }
     }
 }

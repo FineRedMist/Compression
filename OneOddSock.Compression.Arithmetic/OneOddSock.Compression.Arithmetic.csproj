@@ -1,140 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OneOddSock.Compression.Arithmetic</RootNamespace>
-    <AssemblyName>OneOddSock.Compression.Arithmetic</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile131</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>github</RepositoryType>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>Classes for processing streams at the bit level with support for Endian conversions.</Description>
+    <Copyright>Copyright ©  2012</Copyright>
+    <Company>One Odd Sock</Company>
+    <Title>OneOddSock.IO.Arithmethic</Title>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <IntermediateOutputPath>..\obj\Debug\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\bin\Debug\OneOddSock.Compression.Arithmetic.XML</DocumentationFile>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
-    <CodeContractsInferRequires>False</CodeContractsInferRequires>
-    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
-    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
-    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
-    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
-    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;NU1803</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
-    <IntermediateOutputPath>..\obj\Release\</IntermediateOutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\bin\Release\OneOddSock.Compression.Arithmetic.XML</DocumentationFile>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
-    <CodeContractsInferRequires>False</CodeContractsInferRequires>
-    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
-    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
-    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
-    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
-    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;NU1803</NoWarn>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="ArithmeticCoder.cs" />
-    <Compile Include="ArithmeticCoderExtensions.cs" />
-    <Compile Include="ArithmeticDelegateTypes.cs" />
-    <Compile Include="ArithmeticStream.cs" />
-    <Compile Include="IModel.cs" />
-    <Compile Include="NewCharacterByteModel.cs" />
-    <Compile Include="PartialSumTreeFixedSize.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Range.cs" />
-    <Compile Include="RangeExtensions.cs" />
-    <Compile Include="RangeSymbol.cs" />
-    <Compile Include="ZeroOrderAdaptiveByteModel.cs" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
+    <ProjectReference Include="..\OneOddSock.IO\OneOddSock.IO.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="OneOddSock.Compression.Arithmetic.licenseheader" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OneOddSock.IO\OneOddSock.IO.csproj">
-      <Project>{AC1FEB23-F91F-4D1A-8B3E-39E24901BF19}</Project>
-      <Name>OneOddSock.IO</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
