@@ -138,5 +138,40 @@ namespace OneOddSock.Compression.Huffman.Tests
             }
             Assert.AreEqual(data.Position, data.Length);
         }
+
+        [TestMethod]
+        public void VerifyWeights()
+        {
+            string input = "astrachan_";
+            var data = new MemoryStream();
+            var writer = new BitBinaryWriter(data);
+            var compressor = new DynamicHuffman<char>();
+
+            for (int i = 0; i < input.Length; ++i)
+            {
+                compressor.WriteCode(input[i], writer.Write, writer.Write);
+            }
+            writer.Flush();
+
+            Assert.AreEqual(3u, compressor.GetLevel('a'));
+            Assert.AreEqual(3u, compressor.GetWeight('a'));
+            Assert.AreEqual(0u, compressor.GetWeight('x'));
+        }
+
+        [TestMethod]
+        public void ExerciseDotGenerator()
+        {
+            string input = "astrachan_";
+            var data = new MemoryStream();
+            var writer = new BitBinaryWriter(data);
+            var compressor = new DynamicHuffman<char>();
+            compressor.DotWriter = (dot) => { System.Diagnostics.Debug.WriteLine(dot); };
+
+            for (int i = 0; i < input.Length; ++i)
+            {
+                compressor.WriteCode(input[i], writer.Write, writer.Write);
+            }
+            writer.Flush();
+        }
     }
 }
