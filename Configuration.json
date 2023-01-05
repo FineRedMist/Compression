@@ -6,5 +6,6 @@
   "SendSlackStartNotification": true,
   "SlackChannel": "#build-notifications",
   "GitHubStatusName": "Build Status",
-  "GitHubStatusCredentialsId": "GitHub-Status-Notify"
+  "GitHubStatusCredentialsId": "GitHub-Status-Notify",
+  "AdditionalBuildArtifacts": "TestResults/**"
 }
