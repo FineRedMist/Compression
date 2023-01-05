@@ -241,8 +241,8 @@ namespace OneOddSock.Compression.Huffman
                             AppendLine();
                         break;
                 }
-                builder.Append("}}").AppendLine();
-                DotWriter(builder.ToString());
+                builder.Append("}").AppendLine();
+                DotWriter(builder.ToString().Replace("\xD", ""));
             }
 #if false
 			int maxIndexWidth = (int) Math.Ceiling(Math.Log10(entries.Length - 1));
