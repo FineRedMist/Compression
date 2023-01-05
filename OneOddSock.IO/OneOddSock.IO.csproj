@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>github</RepositoryType>
-    <IncludeSymbols>True</IncludeSymbols>
+    <IncludeSymbols>False</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Description>Classes for processing streams at the bit level with support for Endian conversions.</Description>
     <Copyright>Copyright ©  2012</Copyright>
@@ -16,6 +16,8 @@
     <Title>OneOddSock.IO</Title>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageLicenseExpression> Apache-2.0</PackageLicenseExpression>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
