@@ -28,6 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj" />
+    <ProjectReference Include="..\..\OneOddSock.Compression.Huffman\OneOddSock.Compression.Huffman.csproj" />
     <ProjectReference Include="..\..\OneOddSock.IO\OneOddSock.IO.csproj" />
   </ItemGroup>
 </Project>

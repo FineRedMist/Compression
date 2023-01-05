@@ -67,5 +67,39 @@ namespace BitStreamTests
             Assert.AreEqual(reader, ereader);
             Assert.AreEqual((uint)0x4d3c2b1a, ereader.ReadUInt32());
         }
+
+        [TestMethod]
+        public void EndianMarkerWriter_Native()
+        {
+            uint marker = 0xab3c1df2u;
+            MemoryStream memoryStream = new MemoryStream();
+            var writer = new BinaryWriter(memoryStream);
+            var ewriter = EndianMarker.WriteEndianMarker(writer, Endian.Native, marker);
+            Assert.AreSame(writer, ewriter);
+            ewriter.Flush();
+
+            memoryStream.Position = 0;
+            var reader = new BinaryReader(memoryStream);
+            var writtenMarker = reader.ReadUInt32();
+
+            Assert.AreEqual(marker, writtenMarker);
+        }
+
+        [TestMethod]
+        public void EndianMarkerWriter_NonNative()
+        {
+            uint marker = 0xab3c1df2u;
+            MemoryStream memoryStream = new MemoryStream();
+            var writer = new BinaryWriter(memoryStream);
+            var ewriter = EndianMarker.WriteEndianMarker(writer, Endian.NonNative, marker);
+            Assert.AreNotSame(writer, ewriter);
+            ewriter.Flush();
+
+            memoryStream.Position = 0;
+            var reader = new BinaryReader(memoryStream);
+            var writtenMarker = reader.ReadUInt32();
+
+            Assert.AreEqual(0xf21d3cabu, writtenMarker);
+        }
     }
 }

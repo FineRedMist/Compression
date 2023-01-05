@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.IO", "OneOddSock.IO\OneOddSock.IO.csproj", "{AC1FEB23-F91F-4D1A-8B3E-39E24901BF19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.IO.Tests", "Tests\OneOddSock.IO.Tests\OneOddSock.IO.Tests.csproj", "{C44DF3B4-5640-4708-855B-B2D694F0A402}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.IO.Tests", "Tests\OneOddSock.IO.Tests\OneOddSock.IO.Tests.csproj", "{C44DF3B4-5640-4708-855B-B2D694F0A402}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC1FEB23-F91F-4D1A-8B3E-39E24901BF19} = {AC1FEB23-F91F-4D1A-8B3E-39E24901BF19}
 	EndProjectSection
@@ -23,11 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{86FC6B5E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.Compression.Huffman", "OneOddSock.Compression.Huffman\OneOddSock.Compression.Huffman.csproj", "{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Huffman.Tests", "Tests\OneOddSock.Compression.Huffman.Tests\OneOddSock.Compression.Huffman.Tests.csproj", "{F5BE211D-922C-44BB-984A-74549A3492C0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneOddSock.Compression.Arithmetic", "OneOddSock.Compression.Arithmetic\OneOddSock.Compression.Arithmetic.csproj", "{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneOddSock.Compression.Arithmetic.Tests", "Tests\OneOddSock.Compression.Arithmetic.Tests\OneOddSock.Compression.Arithmetic.Tests.csproj", "{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,26 +43,16 @@ Global
 		{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5429DC3-277B-478B-B355-5DF5DFEA6B9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5BE211D-922C-44BB-984A-74549A3492C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5BE211D-922C-44BB-984A-74549A3492C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5BE211D-922C-44BB-984A-74549A3492C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5BE211D-922C-44BB-984A-74549A3492C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D44689BB-03FA-4A9C-8CA1-495E08FF3FC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C44DF3B4-5640-4708-855B-B2D694F0A402} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
-		{F5BE211D-922C-44BB-984A-74549A3492C0} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
-		{31EBB64B-C57B-4E09-AD53-F2B0394D0D6F} = {86FC6B5E-0464-47F0-B041-B1FEEF1FDE0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF0D92EC-9B69-4969-A7A9-82824468CCE0}
