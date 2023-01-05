@@ -65,7 +65,7 @@ namespace OneOddSock.IO
                 var endianWriter = new EndianWriter(writer) { Endian = endian };
                 result = endianWriter;
             }
-            writer.Write(marker);
+            result.Write(marker);
             return result;
         }
     }
